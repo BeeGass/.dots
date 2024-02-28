@@ -53,6 +53,11 @@
   main-user = {
     enable = true;
     userName = "beegass"; # Ensure this matches the default or desired username in main-user.nix
+    description = "Bryan";
+    initialPassword = "12345";
+    packages = with pkgs; [
+	firefox
+    ];
   };
 
   home-manager = {

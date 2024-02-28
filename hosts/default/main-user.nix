@@ -9,20 +9,33 @@ options.main-user = {
     userName = lib.mkOption {
 	type = lib.types.str;
 	default = "mainuser";
-	description = "Username for the main user.";
+	description = "Username for the main useer.";
+    };
+    description = lib.mkOption {
+	type = lib.types.str;
+	default = "Username for the main user.";
+	description = "Desciption for the main user.";
+    };
+    initialPassword = lib.mkOption {
+	type = lib.types.str;
+	default = "12345";
+	description = "Initial password for the main user";
+    };
+    packages = lib.mkOption {
+	type = lib.types.listOf lib.types.package;
+	default = with pkgs; [];
+	description = "List of packages for the main user.";
     };
 };
 config = lib.mkIf cfg.enable {
     users.users.${cfg.userName} = {
 	isNormalUser = true;
-	initialPassword = "12345";
-	description = "Main User";
-	shell = pkgs.zsh;
+	initialPassword = cfg.initialPassword;
+	description = cfg.description;
 	extraGroups = [ "networkmanager" "wheel" ];
-	packages = with pkgs; [
-	    firefox
-	];
-	};
+	packages = cfg.packages;
+	shell = pkgs.zsh;
 	programs.zsh.enable = true;
+	};
     };
 }
