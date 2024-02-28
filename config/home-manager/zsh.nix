@@ -14,7 +14,7 @@
     };
     shellAliases = {
       update = "sudo nixos-rebuild switch --flake ~/dots";
-      n = "nvim"
+      n = "nvim";
     };
   };
 }
