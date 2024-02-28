@@ -1,10 +1,21 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ../../config/home-manager/zsh.nix
+    ../../config/home-manager/git.nix
+  ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "beegass";
   home.homeDirectory = "/home/beegass";
+  home.sessionVariables = {
+    GPG_TTY = "$(tty)";
+    KEYID = "0xA34200D828A7BB26";
+    S_KEYID = "0xACC3640C138D96A2";
+    E_KEYID = "0x21691AE75B0463CC";
+    A_KEYID = "0x27D667E55F655FD2";
+  };
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
