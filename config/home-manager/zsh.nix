@@ -1,5 +1,6 @@
 {pkgs, ...}: {
-  programs.zsh = {
+
+programs.zsh = {
     enable = true;
     enableCompletion = true;
     enableAutosuggestions = true;
@@ -13,7 +14,7 @@
       theme = "powerlevel10k/powerlevel10k";
     };
     shellAliases = {
-      update = "sudo nixos-rebuild switch --flake ~/dots";
+      update = "sudo nixos-rebuild switch --flake /etc/nixos/#default";
       n = "nvim";
     };
   };

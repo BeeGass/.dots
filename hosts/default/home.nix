@@ -4,6 +4,10 @@
   imports = [
     ../../config/home-manager/zsh.nix
     ../../config/home-manager/git.nix
+    ../../config/home-manager/github.nix
+    ../../config/home-manager/gpg.nix
+    ../../config/home-manager/gpg-agent.nix
+    ../../config/home-manager/keychain.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
