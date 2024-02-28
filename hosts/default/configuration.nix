@@ -53,7 +53,7 @@
   main-user = {
     enable = true;
     userName = "beegass"; # Ensure this matches the default or desired username in main-user.nix
-    description = "Bryan";
+    description = "BeeGass";
     initialPassword = "12345";
     packages = with pkgs; [
 	firefox
@@ -72,12 +72,12 @@
 
   # System-wide packages.
   environment.systemPackages = with pkgs; [
+    #alacritty
+    #zsh
     vim
     neovim
     wget
-    alacritty
-    neofetch
-    vscode
+    #neofetch
   ];
 
   #Flakes

@@ -34,8 +34,6 @@ config = lib.mkIf cfg.enable {
 	description = cfg.description;
 	extraGroups = [ "networkmanager" "wheel" ];
 	packages = cfg.packages;
-	shell = pkgs.zsh;
-	programs.zsh.enable = true;
 	};
     };
 }
