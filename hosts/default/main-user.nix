@@ -26,6 +26,11 @@ options.main-user = {
 	default = with pkgs; [];
 	description = "List of packages for the main user.";
     };
+    openssh.authorizedKeys.keys = lib.mkOption {
+	type = lib.types.listOf lib.types.str;
+	default = [];
+	description = "List of authorized keys for performing ssh.";
+    };
 };
 config = lib.mkIf cfg.enable {
     users.users.${cfg.userName} = {
@@ -34,6 +39,7 @@ config = lib.mkIf cfg.enable {
 	description = cfg.description;
 	extraGroups = [ "networkmanager" "wheel" ];
 	packages = cfg.packages;
+	openssh.authorizedKeys.keys = cfg.openssh.authorizedKeys.keys;
 	};
     };
 }
