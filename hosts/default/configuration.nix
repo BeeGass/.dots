@@ -52,8 +52,8 @@
   # User configuration.
   main-user = {
     enable = true;
-    userName = "beegass"; # Ensure this matches the default or desired username in main-user.nix
-    description = "BeeGass";
+    userName = "beegass";
+    description = "beegass";
     initialPassword = "12345";
     packages = with pkgs; [
 	firefox
@@ -66,6 +66,8 @@
 	"beegass" = import ./home.nix;
     };
   };
+  programs.zsh.enable = true;
+  users.users.beegass.shell = pkgs.zsh;
 
   # Allow unfree packages.
   nixpkgs.config.allowUnfree = true;

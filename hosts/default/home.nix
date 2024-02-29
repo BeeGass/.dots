@@ -8,6 +8,7 @@
     ../../config/home-manager/gpg.nix
     ../../config/home-manager/gpg-agent.nix
     ../../config/home-manager/keychain.nix
+    ../../config/home-manager/ssh.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -35,10 +36,12 @@
   home.packages = with pkgs; [
     alacritty
     zsh
+    zsh-powerlevel10k
     #vim
     #neovim
-    vscode
+    #vscode
     git
+    gh
     tmux
     bat
     tree
@@ -93,6 +96,7 @@
   #  /etc/profiles/per-user/beegass/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
+    SHELL = "zsh";
     EDITOR = "nvim";
     TERMINAL = "alacritty";
   };
