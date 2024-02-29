@@ -10,7 +10,7 @@
     ../../config/home-manager/keychain.nix
     ../../config/home-manager/ssh.nix
     ../../config/home-manager/ssh-agent.nix
-    ../../config/home-manager/scripts/git_getbranch.nix
+    # ../../config/home-manager/scripts/git_getbranch.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -18,6 +18,7 @@
   home.homeDirectory = "/home/beegass";
   home.sessionVariables = {
     GPG_TTY = "$(tty)";
+    #SSH_AUTH_SOCK = "$(gpgconf --list-dirs agent-ssh-socket)";
     KEYID = "0xA34200D828A7BB26";
     S_KEYID = "0xACC3640C138D96A2";
     E_KEYID = "0x21691AE75B0463CC";
