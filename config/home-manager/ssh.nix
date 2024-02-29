@@ -7,7 +7,7 @@ programs.ssh = {
 		user = "git";
 		hostname = "github.com";
 		identitiesOnly = true;
-		identityFile = "~/.ssh/ssh_yk.pub";
+		identityFile = "~/.ssh/id_rsa_yubikey.pub";
 	    };
 	    "mydesktop" = {
 		user = "beegass";
