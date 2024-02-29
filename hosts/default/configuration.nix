@@ -79,6 +79,7 @@
     vim
     neovim
     wget
+    openssh
     #neofetch
   ];
 
