@@ -10,7 +10,7 @@
     ../../config/home-manager/keychain.nix
     ../../config/home-manager/ssh.nix
     ../../config/home-manager/ssh-agent.nix
-    # ../../config/home-manager/scripts/git_getbranch.nix
+    #../../config/home-manager/scripts/git_getbranch.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -42,6 +42,7 @@
     bat
     tree
     neofetch
+    (pkgs.callPackage {} ../../config/home-manager/scripts/getbranch.nix)
 
 
     # # Adds the 'hello' command to your environment. It prints a friendly
