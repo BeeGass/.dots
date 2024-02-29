@@ -70,7 +70,7 @@
   programs.zsh.enable = true; # zsh needs to be enabled system-wide before being enabled at a user level
   users.users.beegass.shell = pkgs.zsh; # enable at a user level
 
-  # services.gnome3.gnome-keyring.enable = lib.mkForce false; # gnome performs its own ssh-agent stuff that prevents gpg-agent and ssh-agent from interacting
+  # gnome performs its own ssh-agent stuff that prevents gpg-agent and ssh-agent from interacting
   nixpkgs.overlays = [
     (import ../../config/overlays/gnome-overlay.nix)
   ];
