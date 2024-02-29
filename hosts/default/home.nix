@@ -42,7 +42,7 @@
     bat
     tree
     neofetch
-    (pkgs.callPackage {} ../../config/home-manager/scripts/getbranch.nix)
+    (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
 
 
     # # Adds the 'hello' command to your environment. It prints a friendly
