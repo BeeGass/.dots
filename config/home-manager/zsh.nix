@@ -15,7 +15,7 @@ programs.zsh = {
       theme = "p10k";
     };
     shellAliases = {
-      update = "sudo nixos-rebuild switch --flake /etc/nixos/#default";
+      update = "sudo nixos-rebuild switch --flake ~/dots/#default";
       "n" = "nvim";
     };
     initExtraFirst = ''

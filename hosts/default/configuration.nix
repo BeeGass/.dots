@@ -103,6 +103,9 @@
     settings.PasswordAuthentication = false;
   };
 
+  #Nvidia
+  #services.xserver.videoDrivers = ["nvidia"]
+
   # System state version (do not change this unless you know what you're doing).
   system.stateVersion = "22.05";
 }
