@@ -9,6 +9,7 @@
     ../../config/home-manager/gpg-agent.nix
     ../../config/home-manager/keychain.nix
     ../../config/home-manager/ssh.nix
+    ../../config/home-manager/ssh-agent.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -35,14 +36,6 @@
   # environment.
   home.packages = with pkgs; [
     alacritty
-    zsh
-    zsh-powerlevel10k
-    #vim
-    #neovim
-    #vscode
-    git
-    gh
-    gpg
     tmux
     bat
     tree
