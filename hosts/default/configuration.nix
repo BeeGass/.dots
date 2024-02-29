@@ -15,7 +15,7 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # Set the hostname.
-  networking.hostName = "nixos"; 
+  networking.hostName = "optimus"; 
 
   # Enable networking with NetworkManager.
   networking.networkmanager.enable = true;

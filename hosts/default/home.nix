@@ -1,5 +1,15 @@
 { config, pkgs, ... }:
 
+let
+  unfreePredicate = { 
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
+    "discord-0.0.43"
+    "code"
+    "obsidian-1.5.8"
+    "spotify-1.2.26.1187.g36b715a1"
+  ]; 
+};
+in
 {
   imports = [
     ../../config/home-manager/alacritty.nix
@@ -14,6 +24,10 @@
     ../../config/home-manager/ssh-agent.nix
     #../../config/home-manager/scripts/git_getbranch.nix
   ];
+
+  # Apply the unfreePredicate configuration here
+  nixpkgs.config = unfreePredicate;
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "beegass";
@@ -42,11 +56,7 @@
     bat
     tree
     neofetch
-    discord
-    vscode-fhs
     telegram-desktop
-    obsidian
-    spotify
     rmview
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
 
