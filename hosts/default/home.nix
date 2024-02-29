@@ -2,6 +2,8 @@
 
 {
   imports = [
+    ../../config/home-manager/alacritty.nix
+    ../../config/home-manager/tmux.nix
     ../../config/home-manager/zsh.nix
     ../../config/home-manager/git.nix
     ../../config/home-manager/github.nix
@@ -37,11 +39,15 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    alacritty
-    tmux
     bat
     tree
     neofetch
+    discord
+    vscode-fhs
+    telegram-desktop
+    obsidian
+    spotify
+    rmview
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
 
 
