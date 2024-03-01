@@ -49,6 +49,7 @@
     neofetch
     telegram-desktop
     rmview
+    cbonsai
     
     # Scripts
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
