@@ -5,8 +5,12 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
+      
+      # Allow creation of arbitrary user
       ./main-user.nix
+      
+      # import home manager
+      inputs.home-manager.nixosModules.default
     ];
 
   # Bootloader configuration.
@@ -68,6 +72,7 @@
     users = {
 	"beegass" = import ./home.nix;
     };
+    useGlobalPkgs = true;
   };
 
   programs.zsh.enable = true; # zsh needs to be enabled system-wide before being enabled at a user level
@@ -83,13 +88,10 @@
 
   # System-wide packages.
   environment.systemPackages = with pkgs; [
-    #alacritty
-    #zsh
     vim
     neovim
     wget
     openssh
-    #neofetch
   ];
 
   #Flakes

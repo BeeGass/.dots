@@ -1,4 +1,4 @@
-{pkgs, ...}: 
+{ pkgs, ... }: 
 
 let
   git = "${pkgs.git}/bin/git";

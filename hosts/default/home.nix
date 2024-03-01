@@ -1,15 +1,5 @@
 { config, pkgs, ... }:
 
-let
-  unfreePredicate = { 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
-    "discord-0.0.43"
-    "code"
-    "obsidian-1.5.8"
-    "spotify-1.2.26.1187.g36b715a1"
-  ]; 
-};
-in
 {
   imports = [
     ../../config/home-manager/alacritty.nix
@@ -22,11 +12,10 @@ in
     ../../config/home-manager/keychain.nix
     ../../config/home-manager/ssh.nix
     ../../config/home-manager/ssh-agent.nix
-    #../../config/home-manager/scripts/git_getbranch.nix
   ];
 
   # Apply the unfreePredicate configuration here
-  nixpkgs.config = unfreePredicate;
+  # nixpkgs.config = unfreePredicate;
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -53,12 +42,21 @@ in
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    # Free Section
     bat
     tree
     neofetch
     telegram-desktop
     rmview
+    
+    # Scripts
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
+    
+    #Unfree Section 
+    discord
+    obsidian
+    spotify
+    vscode-fhs
 
 
     # # Adds the 'hello' command to your environment. It prints a friendly
