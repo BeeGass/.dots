@@ -89,7 +89,6 @@
   # System-wide packages.
   environment.systemPackages = with pkgs; [
     vim
-    neovim
     wget
     openssh
   ];

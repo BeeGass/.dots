@@ -12,6 +12,7 @@
     ../../config/home-manager/keychain/keychain.nix
     ../../config/home-manager/ssh.nix
     ../../config/home-manager/ssh-agent.nix
+    ../../config/home-manager/neovim.nix
   ];
 
   # Apply the unfreePredicate configuration here
