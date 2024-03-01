@@ -13,7 +13,6 @@ programs.zsh = {
 	"git"
 	"tmux"
       ];
-      theme = "powerlevel10k";
     };
     shellAliases = {
       update = "sudo nixos-rebuild switch --flake ~/dots/#default";
