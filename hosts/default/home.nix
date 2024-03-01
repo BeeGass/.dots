@@ -9,7 +9,7 @@
     ../../config/home-manager/github.nix
     ../../config/home-manager/gpg/gpg.nix
     ../../config/home-manager/gpg-agent.nix
-    ../../config/home-manager/keychain.nix
+    ../../config/home-manager/keychain/keychain.nix
     ../../config/home-manager/ssh.nix
     ../../config/home-manager/ssh-agent.nix
   ];

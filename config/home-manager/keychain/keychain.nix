@@ -2,7 +2,7 @@
   programs.keychain = {
     enable = true;
     enableZshIntegration = true;
-    keys = ["id_ed25519"]; #revise keys
+    keys = ["id_rsa_yubikey.pub"]; # if not here, import from ssh-add -L
     agents = ["gpg" "ssh"];
   };
 }
