@@ -2,17 +2,21 @@
 
 {
   imports = [
-    ../../config/home-manager/alacritty.nix
+    #../../config/home-manager/alacritty.nix
+    ../../config/home-manager/google-sans-mono.nix
     ../../config/home-manager/tmux.nix
     ../../config/home-manager/zsh.nix
     ../../config/home-manager/git.nix
     ../../config/home-manager/github.nix
     ../../config/home-manager/gpg/gpg.nix
     ../../config/home-manager/gpg-agent.nix
+    #../../config/home-manager/hyprland.nix
     ../../config/home-manager/keychain/keychain.nix
+    ../../config/home-manager/kitty.nix
     ../../config/home-manager/ssh.nix
     ../../config/home-manager/ssh-agent.nix
     ../../config/home-manager/neovim.nix
+    #../../config/home-manager/waybar.nix
   ];
 
   # Apply the unfreePredicate configuration here
@@ -24,7 +28,7 @@
   home.homeDirectory = "/home/beegass";
   home.sessionVariables = {
     GPG_TTY = "$(tty)";
-    #SSH_AUTH_SOCK = "$(gpgconf --list-dirs agent-ssh-socket)";
+    SSH_AUTH_SOCK = "$(gpgconf --list-dirs agent-ssh-socket)";
     KEYID = "0xA34200D828A7BB26";
     S_KEYID = "0xACC3640C138D96A2";
     E_KEYID = "0x21691AE75B0463CC";
@@ -50,6 +54,7 @@
     telegram-desktop
     rmview
     cbonsai
+    google-fonts
     
     # Scripts
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
@@ -112,7 +117,7 @@
   home.sessionVariables = {
     SHELL = "zsh";
     EDITOR = "nvim";
-    TERMINAL = "alacritty";
+    TERMINAL = "kitty";
   };
 
   # Let Home Manager install and manage itself.
