@@ -3,7 +3,7 @@
 {
   imports = [
     #../../config/home-manager/alacritty.nix
-    ../../config/home-manager/google-sans-mono.nix
+    #../../config/home-manager/fonts/google-sans-mono.nix
     ../../config/home-manager/tmux.nix
     ../../config/home-manager/zsh.nix
     ../../config/home-manager/git.nix
@@ -54,7 +54,9 @@
     telegram-desktop
     rmview
     cbonsai
-    google-fonts
+    nix-prefetch-github
+    (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
+    (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
     
     # Scripts
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})

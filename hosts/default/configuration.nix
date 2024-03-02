@@ -33,8 +33,12 @@
   # X11 and Desktop Environment configuration.
   services.xserver = {
     enable = true;
-    layout = "us";
-    xkbVariant = "";
+    xkb = {
+      layout = "us";
+    };
+    xkb = {
+      variant = "";
+    };
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
   };
@@ -110,6 +114,12 @@
 
   #Nvidia
   #services.xserver.videoDrivers = ["nvidia"]
+  
+  fonts.fontDir.enable = true;
+  fonts.packages = with pkgs; [
+    (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
+    (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
+  ];
 
   # System state version (do not change this unless you know what you're doing).
   system.stateVersion = "22.05";

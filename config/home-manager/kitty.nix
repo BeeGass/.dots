@@ -8,7 +8,7 @@ programs.kitty = {
     };
     theme = "GitHub Dark Dimmed";
     font = {
-	name = "Fira Code";
+	name = "Google Sans Mono";
 	size = 10;
     };
   };
