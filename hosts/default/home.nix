@@ -9,11 +9,12 @@
     ../../config/home-manager/gpg-agent.nix
     ../../config/home-manager/gpg/gpg.nix
     #../../config/home-manager/hyprland.nix
-    #../../config/home-manager/i3.nix
+    ../../config/home-manager/i3.nix
     ../../config/home-manager/keychain/keychain.nix
     ../../config/home-manager/kitty.nix
     ../../config/home-manager/neovim.nix
-    #../../config/home-manager/polybar.nix
+    ../../config/home-manager/polybar.nix
+    ../../config/home-manager/rofi.nix
     ../../config/home-manager/ssh-agent.nix
     ../../config/home-manager/ssh.nix
     ../../config/home-manager/tmux.nix
