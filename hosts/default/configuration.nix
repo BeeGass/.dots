@@ -39,8 +39,14 @@
     xkb = {
       variant = "";
     };
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+    desktopManager = {
+      xterm = {
+        enable = false;
+      };
+    };
+    displayManager = {
+        defaultSession = "none+i3";
+    };
   };
 
   # Enable CUPS for printing.
@@ -101,7 +107,7 @@
     TERMINAL = "kitty";
   };
 
-  #Flakes
+  # Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # SSH Server:
@@ -112,13 +118,14 @@
     settings.PasswordAuthentication = false;
   };
 
-  #Nvidia
+  # Nvidia
   #services.xserver.videoDrivers = ["nvidia"]
   
   fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
-    (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
-    (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
+    source-code-pro
+    #(pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
+    #(pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
   ];
 
   # System state version (do not change this unless you know what you're doing).

@@ -3,20 +3,22 @@
 {
   imports = [
     #../../config/home-manager/alacritty.nix
-    #../../config/home-manager/fonts/google-sans-mono.nix
-    ../../config/home-manager/tmux.nix
-    ../../config/home-manager/zsh.nix
+    #../../config/home-manager/eww.nix
     ../../config/home-manager/git.nix
     ../../config/home-manager/github.nix
-    ../../config/home-manager/gpg/gpg.nix
     ../../config/home-manager/gpg-agent.nix
+    ../../config/home-manager/gpg/gpg.nix
     #../../config/home-manager/hyprland.nix
+    #../../config/home-manager/i3.nix
     ../../config/home-manager/keychain/keychain.nix
     ../../config/home-manager/kitty.nix
-    ../../config/home-manager/ssh.nix
-    ../../config/home-manager/ssh-agent.nix
     ../../config/home-manager/neovim.nix
+    #../../config/home-manager/polybar.nix
+    ../../config/home-manager/ssh-agent.nix
+    ../../config/home-manager/ssh.nix
+    ../../config/home-manager/tmux.nix
     #../../config/home-manager/waybar.nix
+    ../../config/home-manager/zsh.nix
   ];
 
   # Apply the unfreePredicate configuration here
@@ -49,14 +51,14 @@
   home.packages = with pkgs; [
     # Free Section
     bat
-    tree
-    neofetch
-    telegram-desktop
-    rmview
     cbonsai
+    neofetch
     nix-prefetch-github
-    (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
-    (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
+    rmview
+    telegram-desktop
+    tree
+    #(pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
+    #(pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
     
     # Scripts
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
