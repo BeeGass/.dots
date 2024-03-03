@@ -87,9 +87,9 @@
   users.users.beegass.shell = pkgs.zsh; # enable at a user level
 
   # gnome performs its own ssh-agent stuff that prevents gpg-agent and ssh-agent from interacting
-  nixpkgs.overlays = [
-    (import ../../config/overlays/gnome-overlay.nix)
-  ];
+  #nixpkgs.overlays = [
+  #  (import ../../config/overlays/gnome-overlay.nix)
+  #];
 
   # Allow unfree packages.
   nixpkgs.config.allowUnfree = true;
