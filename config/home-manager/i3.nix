@@ -32,7 +32,7 @@ in {
         "${mod}+Shift+m" = "move workspace to output DP-5";
 
 	# Open Rofi application launcher
-	"mod+space" = "exec rofi -show drun";
+	"${mod}+space" = "exec rofi -show drun";
       };
     };
   };
