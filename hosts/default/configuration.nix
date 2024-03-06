@@ -43,9 +43,26 @@
       xterm = {
         enable = false;
       };
+      #xfce = {
+      #  enable = false;
+      #  noDesktop = true;
+      #  enableXfwm = false;
+      #};
     };
     displayManager = {
-        defaultSession = "none+i3";
+      lightdm = {
+	enable = true;
+      };
+      session = [
+	{ 
+	  manage = "window";
+	  name = "xsession";
+	  start = ''
+	    ${pkgs.runtimeShell} $HOME/.xsession &
+	    waitPID=$!
+	  '';
+	}
+      ];
     };
   };
 
