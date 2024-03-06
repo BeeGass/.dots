@@ -30,6 +30,9 @@ in {
         # My multi monitor setup
         "${mod}+m" = "move workspace to output DP-2";
         "${mod}+Shift+m" = "move workspace to output DP-5";
+
+	# Open Rofi application launcher
+	"mod+space" = "exec rofi -show drun";
       };
     };
   };
