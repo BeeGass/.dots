@@ -39,6 +39,11 @@
     xkb = {
       variant = "";
     };
+    windowManager = {
+      i3 = {
+        enable = true;
+      };
+    };    
 #    desktopManager = {
 #     #xterm = {
 #     #  enable = false;
