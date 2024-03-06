@@ -44,31 +44,6 @@
         enable = true;
       };
     };    
-#    desktopManager = {
-#     #xterm = {
-#     #  enable = false;
-#     #};
-#      #xfce = {
-#      #  enable = false;
-#      #  noDesktop = true;
-#      #  enableXfwm = false;
-#      #};
-#    };
-#   displayManager = {
-#      #lightdm = {
-#      #  enable = true;
-#      #};
-#      session = [
-#	{ 
-#	  manage = "window";
-#	  name = "xsession";
-#	  start = ''
-#	    ${pkgs.runtimeShell} $HOME/.xsession &
-#	    waitPID=$!
-#	  '';
-#	}
-#      ];
-#    };
   };
 
   # Enable CUPS for printing.
