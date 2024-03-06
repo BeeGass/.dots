@@ -39,16 +39,16 @@
     xkb = {
       variant = "";
     };
-    desktopManager = {
-      xterm = {
-        enable = false;
-      };
-      #xfce = {
-      #  enable = false;
-      #  noDesktop = true;
-      #  enableXfwm = false;
-      #};
-    };
+#    desktopManager = {
+#     #xterm = {
+#     #  enable = false;
+#     #};
+#      #xfce = {
+#      #  enable = false;
+#      #  noDesktop = true;
+#      #  enableXfwm = false;
+#      #};
+#    };
 #   displayManager = {
 #      #lightdm = {
 #      #  enable = true;
