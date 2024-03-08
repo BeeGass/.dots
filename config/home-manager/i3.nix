@@ -5,10 +5,16 @@ let
 in {
   xsession.windowManager.i3 = {
     enable = true;
+    package = pkgs.i3-gaps;
     config = {
       modifier = mod;
 
       fonts = ["DejaVu Sans Mono, FontAwesome 6"];
+
+      gaps = {
+	inner = 15;
+	outer = 5;
+      };
 
       keybindings = lib.mkOptionDefault {
         "${mod}+p" = "exec ${pkgs.dmenu}/bin/dmenu_run";
@@ -27,6 +33,10 @@ in {
 	"${mod}+9" = "workspace 9";
 	"${mod}+0" = "workspace 10";
 
+	# Application Macros
+	"${mod}+Return" = "exec ${pkgs.kitty}/bin/kitty";
+	"${mod}+space" = "exec rofi -show drun";
+
         # Move
 	"${mod}+Left" = "move left";
 	"${mod}+Right" = "move right";
@@ -36,9 +46,26 @@ in {
         # My multi monitor setup
         "${mod}+m" = "move workspace to output DP-2";
         "${mod}+Shift+m" = "move workspace to output DP-5";
+      };
+      
+      defaultWorkspace = "workspace 1";
 
-	# Open Rofi application launcher
-	"${mod}+space" = "exec rofi -show drun";
+      assigns = {
+	"1" = [ { class = "^Kitty$"; } ];
+	"2" = [ { class = "^Vscode$"; } ];
+	"3" = [ { class = "^Google-chrome$"; } ];
+	"10" = [ { class = "^Discord$"; } ];
+      };
+
+      startup = [ 
+	{ command = "systemctl --user restart polybar"; always = true; notification = false; } 
+	];
+
+      terminal = "kitty";
+
+      window = {
+	border = 0;
+	titlebar = false;
       };
     };
   };
