@@ -121,8 +121,8 @@
   fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
     source-code-pro
-    #(pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
-    #(pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
+    (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
+    (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
   ];
 
   # System state version (do not change this unless you know what you're doing).

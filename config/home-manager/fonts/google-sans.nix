@@ -2,9 +2,9 @@
 
 let
   pname = "google-sans";
-  version = "1.0"; # You can define any version you prefer
+  #version = "1.0"; # You can define any version you prefer
 in stdenvNoCC.mkDerivation {
-  name = "${pname}-${version}";
+  name = "${pname}";
 
   src = fetchFromGitHub {
     owner = "hprobotic";

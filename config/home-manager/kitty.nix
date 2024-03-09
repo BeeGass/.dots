@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
 programs.kitty = {
@@ -6,10 +6,11 @@ programs.kitty = {
     shellIntegration = {
       enableZshIntegration = true;
     };
-    theme = "GitHub Dark Dimmed";
+    theme = lib.mkDefault "GitHub Dark Dimmed";
     font = {
-	name = "Source Code Pro";
-	size = 10;
+	name = lib.mkDefault "Google Sans Mono";
+	package = lib.mkDefault (pkgs.callPackage ./fonts/google-sans-mono.nix {});
+	size = lib.mkDefault 10;
     };
   };
 }

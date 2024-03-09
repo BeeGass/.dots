@@ -14,6 +14,7 @@
     ../../config/home-manager/kitty.nix
     ../../config/home-manager/neovim.nix
     ../../config/home-manager/polybar.nix
+    ../../config/home-manager/picom.nix
     ../../config/home-manager/rofi.nix
     ../../config/home-manager/ssh-agent.nix
     ../../config/home-manager/ssh.nix
@@ -58,8 +59,8 @@
     rmview
     telegram-desktop
     tree
-    #(pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
-    #(pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
+    (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
+    (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
     
     # Scripts
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
@@ -124,6 +125,8 @@
     EDITOR = "nvim";
     TERMINAL = "kitty";
   };
+
+  fonts.fontconfig.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
