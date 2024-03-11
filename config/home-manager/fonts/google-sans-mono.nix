@@ -1,9 +1,9 @@
-{ pkgs, lib, stdenvNoCC, fetchFromGitHub, python3, python3Packages }:
+{ pkgs, lib, stdenvNoCC }:
 
 let
   pname = "google-sans-mono";
   
-  fontFiles = fetchFromGitHub {
+  fontFiles = pkgs.fetchFromGitHub {
     name = pname;
     owner = "mehant-kr";
     repo = "Google-Sans-Mono";
@@ -11,7 +11,7 @@ let
     sha256 = "sha256-Vh2ruuFDTyjguxbZLOHSWqxzsLnKMOsa1IzYdrXTPEY=";
   };
 
-  monospacer = fetchFromGitHub {
+  monospacer = pkgs.fetchFromGitHub {
     name = "monospacifier";
     owner = "Finii";
     repo = "monospacifier";
@@ -25,9 +25,9 @@ stdenvNoCC.mkDerivation {
   name = "${pname}";
 
   nativeBuildInputs = [ 
-    python3
-    python3Packages.pip 
-    python3Packages.virtualenv
+    pkgs.python3
+    pkgs.python3Packages.pip 
+    pkgs.python3Packages.virtualenv
     pkgs.fontforge
   ];
 
