@@ -26,8 +26,6 @@ stdenvNoCC.mkDerivation {
 
   nativeBuildInputs = [ 
     pkgs.python3
-    pkgs.python3Packages.pip 
-    pkgs.python3Packages.virtualenv
     pkgs.fontforge
   ];
 
@@ -38,29 +36,15 @@ stdenvNoCC.mkDerivation {
 
   sourceRoot = ".";
 
-  buildPhase = ''
-    # Create a virtual environment
-    virtualenv venv
-    source venv/bin/activate
-  '';
-
   installPhase = ''
     echo "Making Directory"
     mkdir -p $out/share/fonts/truetype/
-
-    # Activate the virtual environment
-    echo "Activating Venv"
-    source venv/bin/activate
 
     # Run monospacifier.py on each font file
     echo "Running monospacifier"
     for font in ./google-sans-mono/*.ttf; do
       python ./monospacifier/monospacifier.py --references ${font} --inputs ${font} --save-to "$out/share/fonts/truetype/"
     done
-    
-    # Deactivate the virtual environment
-    echo "Deactivate Venv"
-    deactivate
   '';
 
   meta = with lib; {
