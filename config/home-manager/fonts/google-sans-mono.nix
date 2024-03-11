@@ -1,26 +1,72 @@
-{ lib, stdenvNoCC, fetchFromGitHub }:
+{ pkgs, lib, stdenvNoCC, fetchFromGitHub, python3, python3Packages }:
 
 let
   pname = "google-sans-mono";
-in stdenvNoCC.mkDerivation {
-  name = "${pname}";
-
-  src = fetchFromGitHub {
+  
+  fontFiles = fetchFromGitHub {
+    name = pname;
     owner = "mehant-kr";
     repo = "Google-Sans-Mono";
     rev = "2535d60dba86fb711a4a87516de136b8cae92279";
     sha256 = "sha256-Vh2ruuFDTyjguxbZLOHSWqxzsLnKMOsa1IzYdrXTPEY=";
   };
 
+  monospacer = fetchFromGitHub {
+    name = "monospacifier";
+    owner = "Finii";
+    repo = "monospacifier";
+    rev = "096a00b7af3de746190f70ca147cd32948fb66ca";
+    sha256 = "sha256-QqGRENHajjlBwQGKL9WhOP5D8tdSeFJDvWgmCiX5SKk=";
+  };
+
+  font = "\${font}";
+in 
+stdenvNoCC.mkDerivation {
+  name = "${pname}";
+
+  nativeBuildInputs = [ 
+    python3
+    python3Packages.pip 
+    python3Packages.virtualenv
+    pkgs.fontforge
+  ];
+
+  srcs = [ 
+    fontFiles
+    monospacer
+  ];
+
+  sourceRoot = ".";
+
+  buildPhase = ''
+    # Create a virtual environment
+    virtualenv venv
+    source venv/bin/activate
+  '';
+
   installPhase = ''
-    mkdir -p $out/share/fonts/truetype
-    cp -R $src/*.ttf $out/share/fonts/truetype/
+    echo "Making Directory"
+    mkdir -p $out/share/fonts/truetype/
+
+    # Activate the virtual environment
+    echo "Activating Venv"
+    source venv/bin/activate
+
+    # Run monospacifier.py on each font file
+    echo "Running monospacifier"
+    for font in ./google-sans-mono/*.ttf; do
+      python ./monospacifier/monospacifier.py --references ${font} --inputs ${font} --save-to "$out/share/fonts/truetype/"
+    done
+    
+    # Deactivate the virtual environment
+    echo "Deactivate Venv"
+    deactivate
   '';
 
   meta = with lib; {
-    description = "Google Sans Mono";
+    description = "Google Sans Mono (Monospacified)";
     homepage = "https://github.com/mehant-kr/Google-Sans-Mono";
-    license = lib.licenses.asl20; # Adjust the license accordingly
+    license = lib.licenses.asl20;
     platforms = lib.platforms.all;
   };
 }

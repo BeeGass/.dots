@@ -8,8 +8,7 @@ programs.kitty = {
     };
     theme = lib.mkDefault "GitHub Dark Dimmed";
     font = {
-	name = lib.mkDefault "Google Sans Mono";
-	package = lib.mkDefault (pkgs.callPackage ./fonts/google-sans-mono.nix {});
+	name = lib.mkDefault "Google Sans Mono monospacified for Google Sans Mono";
 	size = lib.mkDefault 10;
     };
   };
