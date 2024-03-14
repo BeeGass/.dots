@@ -223,11 +223,11 @@ in {
         format = "<label-state> <label-mode>";
         label-mode = "%mode%";
         label-mode-padding = 2;
-        label-mode-background = "${accent}";
+        label-mode-background = "${primary}";
 
         label-focused = "%icon%";
         label-focused-foreground = "${foreground}";
-        label-focused-background = "${accent}";
+        label-focused-background = "${primary}";
         label-focused-padding = 2;
 
         label-unfocused = "%icon%";
@@ -390,7 +390,7 @@ in {
         format = "<label>";
         format-foreground = "${secondary}";
         label = "%title%";
-        label-maxlen = 50;
+        label-maxlen = 40;
       };
 
       "module/dumbtitle" = {
