@@ -54,10 +54,12 @@
     # Free Section
     bat
     cbonsai
+    font-awesome
     neofetch
     nix-prefetch-github
     rmview
     telegram-desktop
+    terminus-nerdfont
     tree
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})

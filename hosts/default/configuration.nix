@@ -121,6 +121,8 @@
   fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
     source-code-pro
+    font-awesome
+    terminus-nerdfont
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
   ];
