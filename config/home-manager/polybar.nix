@@ -26,8 +26,8 @@ in {
       polybar double-right-right &
       polybar double-right-left &
       polybar single-center &
-      # polybar double-left-right &
-      polybar double-left-left 
+      polybar double-left-right &
+      polybar double-left-left &
     '';
 
     config = {
@@ -88,7 +88,7 @@ in {
 
         modules-left = "menu";
         modules-center = "cpu";
-        modules-right = "wlan";
+        # modules-right = "wlan";
 
         font-0 = "${font-0}:size=${fontSize};3";
         font-1 = "${font-1}:size=${fontSize};3";
@@ -223,8 +223,6 @@ in {
         type = "internal/cpu";
 
         interval = 2;
-
-        # format-prefix = " ";
         label-padding = 1;
 
         ramp-coreload-0 = "▁";
@@ -259,9 +257,6 @@ in {
         adapter = "AC0";
         full-at = 98;
 
-        # format-full-prefix = " ";
-        # format-full-prefix-foreground = "${foreground}";
-
         ramp-capacity-0 = "";
         ramp-capacity-1 = "";
         ramp-capacity-2 = "";
@@ -295,9 +290,6 @@ in {
 
         format-charging = "<animation-charging> <label-charging>";
         format-discharging = "<ramp-capacity> <label-discharging>";
-
-        # label-charging = "%format-charging%";
-        # label-discharging = "%format-discharging%";
       };
 
       "module/date" = {
@@ -469,12 +461,6 @@ in {
         ramp-volume-2 = "";
 
         label-muted = " muted";
-
-        # ramp-volume-0-foreground = "#C36561";
-        # ramp-volume-1-foreground = "#C36561";
-        # ramp-volume-2-foreground = "#C36561";
-
-        # label-muted-foreground = "#C36561";
 
         label-volume = "%percentage%";
         format-volume = "<ramp-volume> <label-volume>";
