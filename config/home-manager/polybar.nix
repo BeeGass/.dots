@@ -8,10 +8,10 @@ let
   accent = "#8C6C5E"; # Dusty brown
 
   fontSize = "10";
-  fontFamily = "Google Sans Mono monospacified for Google Sans Mono";
-  secondFont = "Google Sans";
-  thirdFont = "TerminessNerdFont";
-  fourthFont = "Font Awesome 6";
+  font-0 = "Google Sans Mono monospacified for Google Sans Mono";
+  font-1 = "Google Sans";
+  font-2 = "TerminessNerdFont";
+  font-3 = "Font Awesome 6 Free";
 in {
   services.polybar = {
     enable = true;
@@ -23,23 +23,28 @@ in {
 
     script = ''
       polybar dumb &
-      polybar triple-right-right &
-      polybar triple-right-center &
-      polybar triple-right-left &
+      polybar double-right-right &
+      polybar double-right-left &
       polybar single-center &
-      polybar single-left &
+      # polybar double-left-right &
+      polybar double-left-left 
     '';
 
     config = {
-      "bar/triple-right-right" = {
+
+      ##########################################
+      ################### Bars #################
+      ##########################################
+
+      "bar/double-right-right" = {
         bottom = false;
         fixed-center = true;
         override-redirect = true;
         
-        width = "10%";
+        width = "12%";
         height = 30;
 
-        offset-x = "89%";
+        offset-x = "87%";
         offset-y = "1%";
               
         radius-top = "-60%";
@@ -47,24 +52,26 @@ in {
 
         background = "${background}"; 
         foreground = "${foreground}";
-        padding = 1;
+        padding = 2;
 
         locale = "en_US.UTF-8";
 
-        modules-left = "battery";
-        modules-center = "powermenu";
+        modules-left = "pulseaudio";
+        modules-center = "battery";
         modules-right = "date";
 
-        font-0 = "${fontFamily}:size=${fontSize};3";
-        font-1 = "${secondFont}:size=${fontSize};3";
+        font-0 = "${font-0}:size=${fontSize};3";
+        font-1 = "${font-1}:size=${fontSize};3";
+        font-2 = "${font-2}:size=${fontSize};3";
+        font-3 = "${font-3}:size=${fontSize};3";
       };
 
-      "bar/triple-right-center" = {
+      "bar/double-right-left" = {
         bottom = false;
         fixed-center = true;
         override-redirect = true;
         
-        width = "10%";
+        width = "8%";
         height = 30;
 
         offset-x = "78%";
@@ -75,43 +82,18 @@ in {
 
         background = "${background}"; 
         foreground = "${foreground}";
-        padding = 1;
+        padding = 2;
 
         locale = "en_US.UTF-8";
 
-        modules-left = "pulseaudio";
+        modules-left = "menu";
         modules-center = "cpu";
         modules-right = "wlan";
 
-        font-0 = "${fontFamily}:size=${fontSize};3";
-        font-1 = "${secondFont}:size=${fontSize};3";
-      };
-
-
-      "bar/triple-right-left" = {
-        bottom = false;
-        fixed-center = true;
-        override-redirect = true;
-        
-        width = "4%";
-        height = 30;
-
-        offset-x = "73%";
-        offset-y = "1%";
-              
-        radius-top = "-60%";
-        radius-bottom = "-60%";
-
-        background = "${background}"; 
-        foreground = "${foreground}";
-        padding = 1;
-
-        locale = "en_US.UTF-8";
-
-        modules-left = "tray";
-
-        font-0 = "${fontFamily}:size=${fontSize};3";
-        font-1 = "${secondFont}:size=${fontSize};3";
+        font-0 = "${font-0}:size=${fontSize};3";
+        font-1 = "${font-1}:size=${fontSize};3";
+        font-2 = "${font-2}:size=${fontSize};3";
+        font-3 = "${font-3}:size=${fontSize};3";
       };
 
       "bar/single-center" = {
@@ -136,11 +118,45 @@ in {
 
         modules-center = "title";
 
-        font-0 = "${fontFamily}:size=${fontSize};3";
-        font-1 = "${secondFont}:size=${fontSize};3";
+        font-0 = "${font-0}:size=${fontSize};3";
+        font-1 = "${font-1}:size=${fontSize};3";
+        font-2 = "${font-2}:size=${fontSize};3";
+        font-3 = "${font-3}:size=${fontSize};3";
       };
 
-      "bar/single-left" = {
+      "bar/double-left-right" = {
+        bottom = false;
+        fixed-center = true;
+        override-redirect = true;
+        
+        width = "8%";
+        height = 30;
+
+        offset-x = "11%";
+        offset-y = "1%";
+              
+        radius-top = "-60%";
+        radius-bottom = "-60%";
+
+        # background = "${background}"; 
+        # foreground = "${foreground}";
+
+        background = "#00282c34"; 
+        foreground = "#00282c34";
+
+        padding = 1;
+
+        locale = "en_US.UTF-8";
+
+        modules-left = "tray";
+
+        font-0 = "${font-0}:size=${fontSize};3";
+        font-1 = "${font-1}:size=${fontSize};3";
+        font-2 = "${font-2}:size=${fontSize};3";
+        font-3 = "${font-3}:size=${fontSize};3";
+      };
+
+      "bar/double-left-left" = {
         bottom = false;
         fixed-center = true;
         override-redirect = true;
@@ -162,8 +178,10 @@ in {
 
         modules-left = "i3";
 
-        font-0 = "${thirdFont}:size=${fontSize};3";
-        font-1 = "${fourthFont}:size=${fontSize};3";
+        font-0 = "${font-0}:size=${fontSize};3";
+        font-1 = "${font-1}:size=${fontSize};3";
+        font-2 = "${font-2}:size=${fontSize};3";
+        font-3 = "${font-3}:size=${fontSize};3";
       };
 
       "bar/dumb" = {
@@ -173,7 +191,7 @@ in {
         wm-restack = "i3";
 
         width = "100%";
-        height = 50; # 40
+        height = 40; # 50
 
         #offset-x = "45%";
         #offset-y = "1%";
@@ -183,30 +201,134 @@ in {
 
         # locale = "en_US.UTF-8";
 
-        modules-center = "dumbtitle";
+        modules-center = "title-2";
 
-        # background = "#00282c34"; 
-        # foreground = "#00282c34";
+        background = "#00282c34"; 
+        foreground = "#00282c34";
 
-        background = "#ccFBE870"; 
-        foreground = "#ccFBE870";
+        # background = "#ccFBE870"; 
+        # foreground = "#ccFBE870";
 
-        font-0 = "${fontFamily}:size=${fontSize};3";
-        font-1 = "${secondFont}:size=${fontSize};3";
+        font-0 = "${font-0}:size=${fontSize};3";
+        font-1 = "${font-1}:size=${fontSize};3";
+        font-2 = "${font-2}:size=${fontSize};3";
+        font-3 = "${font-3}:size=${fontSize};3";
+      };
+
+      ##########################################
+      ################# Modules ################
+      ##########################################
+
+      "module/cpu" = {
+        type = "internal/cpu";
+
+        interval = 2;
+
+        # format-prefix = " ";
+        label-padding = 1;
+
+        ramp-coreload-0 = "▁";
+        ramp-coreload-1 = "▂";
+        ramp-coreload-2 = "▃";
+        ramp-coreload-3 = "▄";
+        ramp-coreload-4 = "▅";
+        ramp-coreload-5 = "▆";
+        ramp-coreload-6 = "▇";
+        ramp-coreload-7 = "█";
+
+        ramp-coreload-0-foreground = "#B6B99D";
+        ramp-coreload-1-foreground = "#B6B99D";
+        ramp-coreload-2-foreground = "#A0A57E";
+        ramp-coreload-3-foreground = "#DEBC9C";
+        ramp-coreload-4-foreground = "#DEBC9C";
+        ramp-coreload-5-foreground = "#D1A375";
+        ramp-coreload-6-foreground = "#D19485";
+        ramp-coreload-7-foreground = "#C36561";
+
+        #label = "";
+        label = " %percentage%";
+
+        #format = "<label> <ramp-coreload>";
+        format = "<label>";
+      };
+
+      "module/battery" = {
+        type = "internal/battery";
+
+        battery = "BAT0";
+        adapter = "AC0";
+        full-at = 98;
+
+        # format-full-prefix = " ";
+        # format-full-prefix-foreground = "${foreground}";
+
+        ramp-capacity-0 = "";
+        ramp-capacity-1 = "";
+        ramp-capacity-2 = "";
+        ramp-capacity-3 = "";
+        ramp-capacity-4 = "";
+
+        ramp-capacity-0-foreground = "#B6B99D";
+        ramp-capacity-1-foreground = "#B6B99D";
+        ramp-capacity-2-foreground = "#A0A57E";
+        ramp-capacity-3-foreground = "#DEBC9C";
+        ramp-capacity-4-foreground = "#DEBC9C";
+        # ramp-capacity-foreground = "${foreground}";
+
+        animation-charging-0 = "";
+        animation-charging-1 = "";
+        animation-charging-2 = "";
+        animation-charging-3 = "";
+        animation-charging-4 = "";
+
+        animation-charging-0-foreground = "#B6B99D";
+        animation-charging-1-foreground = "#B6B99D";
+        animation-charging-2-foreground = "#A0A57E";
+        animation-charging-3-foreground = "#DEBC9C";
+        animation-charging-4-foreground = "#DEBC9C";
+        # animation-charging-foreground = "${foreground}";
+        
+        animation-charging-framerate = "750";
+
+        label-charging = "%percentage%";
+        label-discharging = "%percentage%";
+
+        format-charging = "<animation-charging> <label-charging>";
+        format-discharging = "<ramp-capacity> <label-discharging>";
+
+        # label-charging = "%format-charging%";
+        # label-discharging = "%format-discharging%";
+      };
+
+      "module/date" = {
+        type = "internal/date";
+
+        interval = 1;
+
+        date = "%b %d";
+        date-alt = "%a %b %d";
+
+        time = "%I:%M %p";
+        time-alt = "%H:%M";
+
+        label = " %time%";
+        format = "<label>";
       };
 
       "module/tray" = {
         type = "internal/tray";
 
-        tray-background = "${background}";
-        tray-foreground = "${foreground}";
+        tray-background = "#aa282c34"; 
+        tray-foreground = "#aa282c34";
 
-        tray-position = "right";
+        # tray-background = "${background}";
+        # tray-foreground = "${foreground}";
+
+        tray-position = "left";
         tray-size = "66%";
         tray-padding = 2;
         tray-max-size = 16;
         tray-scale = true;
-
       };
 
       "module/i3" = {
@@ -222,28 +344,32 @@ in {
 
         format = "<label-state> <label-mode>";
         label-mode = "%mode%";
-        label-mode-padding = 2;
+        label-mode-padding = 1;
         label-mode-background = "${primary}";
 
         label-focused = "%icon%";
-        label-focused-foreground = "${foreground}";
-        label-focused-background = "${primary}";
-        label-focused-padding = 2;
+        label-focused-foreground = "${secondary}";
+        label-focused-background = "${background}";
+        label-focused-padding = 1;
 
         label-unfocused = "%icon%";
         label-unfocused-foreground = "${foreground}";
         label-unfocused-background = "${background}";
-        label-unfocused-padding = 2;
+        label-unfocused-padding = 1;
 
         label-visible = "%icon%";
         label-visible-foreground = "${foreground}";
         label-visible-background = "${background}";
-        label-visible-padding = 2;
+        label-visible-padding = 1;
 
         label-urgent = "%icon%";
-        label-urgent-foreground = "${foreground}";
-        label-urgent-background = "#ff0000";
-        label-urgent-padding = 2;
+        label-urgent-foreground = "#ff0000";
+        label-urgent-background = "${background}";
+        label-urgent-padding = 1;
+
+        label-separator = "|";
+        label-separator-padding = 1;
+        label-separator-foreground = "${foreground}";
 
         ws-icon-0 = "0;";
         ws-icon-1 = "1;󰨞";
@@ -255,30 +381,7 @@ in {
         ws-icon-7 = "7;󰲮";
         ws-icon-8 = "8;󱂐";
         ws-icon-9 = "9;󰄕";
-        ws-icon-default = "";
-      };
-
-      "module/date" = {
-        type = "internal/date";
-
-        interval = 1;
-        date = "%b %d"; #"%a, %b %d"
-        time = "%I:%M %p";
-        format = "<label>";
-        label = "%date% %time%";
-      };
-
-      "module/pulseaudio" = {
-        type = "internal/pulseaudio";
-
-        format-volume = "<ramp-volume> <label-volume>";
-        label-volume = "%percentage%";
-        label-volume-padding = 1;
-        ramp-volume-0 = "奄";
-        ramp-volume-1 = "奄";
-        ramp-volume-2 = "奔";
-        label-muted = "婢 Muted";
-        label-muted-padding = 1;
+        ws-icon-default = "";
       };
 
       #"module/memory" = {
@@ -289,99 +392,92 @@ in {
       #  label-padding = 1;
       #};
 
-      "module/cpu" = {
-        type = "internal/cpu";
-
-        interval = 2;
-        label = "%percentage:3%";
-        format-prefix = " ";
-        label-padding = 1;
-
-        format = "<label> <ramp-load>";
-        ramp-load-0 = "▁";
-        ramp-load-1 = "▂";
-        ramp-load-2 = "▃";
-        ramp-load-3 = "▄";
-        ramp-load-4 = "▅";
-        ramp-load-5 = "▆";
-        ramp-load-6 = "▇";
-        ramp-load-7 = "█";
-
-        ramp-load-0-foreground = "#B6B99D";
-        ramp-load-1-foreground = "#B6B99D";
-        ramp-load-2-foreground = "#A0A57E";
-        ramp-load-3-foreground = "#DEBC9C";
-        ramp-load-4-foreground = "#DEBC9C";
-        ramp-load-5-foreground = "#D1A375";
-        ramp-load-6-foreground = "#D19485";
-        ramp-load-7-foreground = "#C36561";
-      };
-
-      "module/wlan" = {
-        type = "internal/network";
-        interval = "3.0";
-
-        format-connected = "<ramp-signal> <label-connected>";
-        label-connected =
-          "%essid%  ( %upspeed:9%  %downspeed:9%)";
-
-        ramp-signal-0 = "▁";
-        ramp-signal-1 = "▂";
-        ramp-signal-2 = "▃";
-        ramp-signal-3 = "▄";
-        ramp-signal-4 = "▅";
-        ramp-signal-5 = "▆";
-        ramp-signal-6 = "▇";
-        ramp-signal-7 = "█";
-      };
-
-      "module/battery" = {
-        type = "internal/battery";
-
-        battery = "BAT0";
-        adapter = "ADP1";
-        full-at = 98;
-        
-        format-charging = "<animation-charging> <label-charging>";
-
-        format-discharging = "<ramp-capacity> <label-discharging>";
-
-        format-full-prefix = " ";
-        format-full-prefix-foreground = "${foreground}";
-
-        ramp-capacity-0 = "";
-        ramp-capacity-1 = "";
-        ramp-capacity-2 = "";
-        ramp-capacity-foreground = "${foreground}";
-
-        animation-charging-0 = "";
-        animation-charging-1 = "";
-        # animation-charging-2 = "";
-        animation-charging-foreground = "${foreground}";
-        animation-charging-framerate = "750";
-      };
-
-      "module/powermenu" = {
+      "module/menu" = {
         type = "custom/menu";
 
         expand-right = true;
-        format-spacing = 1;
 
+        # ---------
+        # Powermenu
+        # ---------
+        menu-0-0 = "  "; # logout
+        menu-0-0-exec = "menu-open-1";
+        # menu-0-0-foreground = ${colors.urgent}
+
+        menu-0-1 = "  "; # reboot
+        menu-0-1-exec = "menu-open-2";
+        # menu-0-1-foreground = ${colors.urgent}
+
+        menu-0-2 = "  "; # shutdown
+        menu-0-2-exec = "menu-open-3";
+        # menu-0-2-foreground = ${colors.warning}
+
+        # ------
+        # Logout
+        # ------
+        menu-1-0 = "Logout";
+        menu-1-0-exec = "i3-msg exit";
+        # menu-1-1-foreground = ${colors.urgent}
+
+        menu-1-1 = "Cancel";
+        menu-1-1-exec = "menu-open-0";
+        # menu-1-0-foreground = ${colors.success}
+
+        # ------
+        # Reboot
+        # ------
+        menu-2-0 = "Reboot";
+        menu-2-0-exec = "systemctl reboot";
+        # menu-2-0-foreground = ${colors.urgent}
+
+        menu-2-1 = "Cancel ";
+        menu-2-1-exec = "menu-open-0";
+        # menu-2-1-foreground = ${colors.success}
+
+        # --------
+        # Shutdown
+        # --------
+        menu-3-0 = "Shutdown";
+        menu-3-0-exec = "systemctl poweroff";
+        # menu-3-0-foreground = ${colors.urgent}
+
+        menu-3-1 = "Cancel";
+        menu-3-1-exec = "menu-open-0";
+        # menu-3-1-foreground = ${colors.success}
+
+        # -----
+        # Other
+        # -----
         label-open = "";
-        label-open-foreground = "${foreground}";
+        # label-open-foreground = "${foreground}";
+
         label-close = "";
-        label-close-foreground = "${foreground}";
-        label-separator = "|";
-        label-separator-foreground = "${foreground}";
-
-        menu-0-0 = "Logout";
-        menu-0-0-exec = "i3-msg exit";
-
-        menu-0-1 = "Reboot";
-        menu-0-1-exec = "shutdown -r now";
+        # label-close-foreground = "${foreground}";
         
-        menu-0-2 = "Shutdown";
-        menu-0-2-exec = "shutdown now";
+        label-separator = "|";
+        # label-separator-foreground = "${foreground}";
+      };
+
+      "module/pulseaudio" = {
+        type = "internal/pulseaudio";
+
+        label-volume-padding = 1;
+        label-muted-padding = 1;
+
+        ramp-volume-0 = "";
+        ramp-volume-1 = "";
+        ramp-volume-2 = "";
+
+        label-muted = " muted";
+
+        # ramp-volume-0-foreground = "#C36561";
+        # ramp-volume-1-foreground = "#C36561";
+        # ramp-volume-2-foreground = "#C36561";
+
+        # label-muted-foreground = "#C36561";
+
+        label-volume = "%percentage%";
+        format-volume = "<ramp-volume> <label-volume>";
       };
 
       "module/title" = {
@@ -393,7 +489,7 @@ in {
         label-maxlen = 40;
       };
 
-      "module/dumbtitle" = {
+      "module/title-2" = {
         type = "internal/xwindow";
         
         format = "<label>";
@@ -402,38 +498,35 @@ in {
         label-maxlen = 5;
       };
 
-      "global/wm" = {
-        margin-top = "10";
-        # margin-bottom = "5";
+      "module/wlan" = {
+        type = "internal/network";
+        interface = "wlan1";
+        interface-type = "wireless";
+        interval = "3.0";
+
+        label-connected = " %downspeed%";
+
+        ramp-signal-0 = "▁";
+        ramp-signal-1 = "▂";
+        ramp-signal-2 = "▃";
+        ramp-signal-3 = "▄";
+        ramp-signal-4 = "▅";
+        ramp-signal-5 = "▆";
+        ramp-signal-6 = "▇";
+        ramp-signal-7 = "█";
+
+        ramp-signal-0-foreground = "#B6B99D";
+        ramp-signal-1-foreground = "#B6B99D";
+        ramp-signal-2-foreground = "#A0A57E";
+        ramp-signal-3-foreground = "#DEBC9C";
+        ramp-signal-4-foreground = "#DEBC9C";
+        ramp-signal-5-foreground = "#D1A375";
+        ramp-signal-6-foreground = "#D19485";
+        ramp-signal-7-foreground = "#C36561";
+
+        # format-connected = "<ramp-signal> <label-connected>"; 
+        format-connected = "<label-connected>"; 
       };
-
-
-      # "settings" = {
-      #   # Reload when the screen configuration changes (XCB_RANDR_SCREEN_CHANGE_NOTIFY event)
-      #   screenchange-reload = true;
-
-      #   # Compositing operators
-      #   # see: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-operator-t
-      #   compositing-background = "dest"; # source
-      #   compositing-foreground = "dest"; # over
-      #   compositing-overline = "dest"; # over
-      #   compositing-underline = "dest"; # over
-      #   compositing-border = "dest"; # over
-
-      #   # Define fallback values used by all module formats
-      #   # format-foreground = 
-      #   # format-background = 
-      #   # format-underline =
-      #   # format-overline =
-      #   # format-spacing =
-      #   # format-padding =
-      #   # format-margin =
-      #   # format-offset =
-
-      #   # Enables pseudo-transparency for the bar
-      #   # If set to true the bar can be transparent without a compositor.
-      #   pseudo-transparency = false;
-      # };
     };
   };
 }

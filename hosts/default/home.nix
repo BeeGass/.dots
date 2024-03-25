@@ -56,19 +56,25 @@
     cbonsai
     font-awesome
     neofetch
+    maim
     nix-prefetch-github
+    nix-output-monitor
+    #nom
     rmview
+    source-code-pro
     telegram-desktop
     terminus-nerdfont
     tree
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
+    xclip
     
     # Scripts
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
     
     #Unfree Section 
     discord
+    material-icons
     obsidian
     spotify
     vscode-fhs

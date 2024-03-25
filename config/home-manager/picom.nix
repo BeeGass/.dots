@@ -3,9 +3,8 @@
 {
 services.picom = {
     enable = true;
-    shadow = true;
-    #shadowOffsets = { [ -15 -15 ] };
-    shadowOpacity = 0.75;
+    # shadow = true;
+    # shadowOpacity = 0.75;
     opacityRules = [ 
       #"100:name = 'Picture in picture'"
       #"100:name = 'Picture-in-Picture'"
