@@ -30,7 +30,27 @@
           name = "desktop";
           configuration = ./hosts/desktop/configuration.nix;
         };
-        #Add more hosts as needed
+        laptop = nixosSystem {
+          name = "laptop";
+          configuration = ./hosts/laptop/configuration.nix;
+        };
+        macbook = nixosSystem {
+          name = "macbook";
+          configuration = ./hosts/macbook/configuration.nix;
+        };
+        home-server = nixosSystem {
+          name = "home-server";
+          configuration = ./hosts/home-server/configuration.nix;
+        };
+        remote-server = nixosSystem {
+          name = "remote-server";
+          configuration = ./hosts/remote-server/configuration.nix;
+        };
+        vm = nixosSystem {
+          name = "vm";
+          configuration = ./hosts/vm/configuration.nix;
+        };
+	#Add more hosts as needed
       };
     };
 }
