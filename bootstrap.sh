@@ -126,6 +126,26 @@ if [ -f /etc/nixos/configuration.nix ]; then
   sudo cp /etc/nixos/configuration.nix /etc/nixosconfiguration.nix.backup.$(date +%Y%m%d%H%M%S)
 fi
 
+# INSERT THE CLEANUP CODE HERE
+
+######################################
+## CLEAN UP EXISTING /etc/nixos/
+######################################
+log "Cleaning up existing files in /etc/nixos/..."
+# Keep only hardware-configuration.nix if it exists and we want to preserve it
+if [ -f /etc/nixos/hardware-configuration.nix ] && [ "$1" != "--generate-hardware" ]; then
+  sudo mv /etc/nixos/hardware-configuration.nix /etc/nixos/hardware-configuration.nix.preserve
+fi
+
+# Remove everything in /etc/nixos/
+sudo rm -rf /etc/nixos/*
+
+# Restore hardware config if we preserved it
+if [ -f /etc/nixos/hardware-configuration.nix.preserve ]; then
+  sudo mv /etc/nixos/hardware-configuration.nix.preserve /etc/nixos/hardware-configuration.nix
+fi
+success "Cleanup complete"
+
 ######################################
 ## LINK SYSTEM CONFIGURATION FILES
 ######################################
@@ -202,4 +222,3 @@ success "NixOS system rebuild complete"
 
 success "Bootstrap process complete for profile: $PROFILE"
 log "You may need to reboot for all changes to take effect"
-
