@@ -14,26 +14,24 @@
     ];
 
   # Bootloader configuration.
-  #boot.loader = {
-  #  systemd-boot = {
-  #    enable = true;
-  #    configurationLimit = 10;  # Limits number of generations kept
-  #  };
-  #  efi = {
-  #    canTouchEfiVariables = true; 
-  #    efiSysMountPoint = "/boot/efi";  # This may differ depending on your VM setup
-  #  };
-  #  timeout = 3;  # Seconds to show boot menu
-  #};
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-    useOSProber = true;
+  boot = {
+    loader = {
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 10;  # Limits number of generations kept
+      };
+      efi = {
+        canTouchEfiVariables = true; 
+        efiSysMountPoint = "/boot/efi";  # This may differ depending on your VM setup
+      };
+      # grub = {
+      #   enable = true;
+      #   version = 2;
+      #   device = "/dev/sda";
+      #   useOSProber = true;
+      # };
+    };
   };
-
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
-  #boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # Set the hostname.
   networking.hostName = "beegass-vm"; 
@@ -66,15 +64,15 @@
       variant = "";
     };
     # You can choose which desktop environment to use
-    displayManager.lightdm.enable = true;
-    
+    # displayManager.lightdm.enable = true;
+
     # Either use XFCE or i3 based on your preference
     # desktopManager.xfce.enable = true;
-    
-    # Uncomment to enable i3
-    windowManager.i3 = {
-      enable = true;
-    };
+    windowManager = {
+      i3 = {
+        enable = true;
+      };
+    };    
   };
 
   # Enable CUPS for printing.
@@ -122,7 +120,20 @@
     useGlobalPkgs = true;
   };
 
-  programs.zsh.enable = true; # zsh needs to be enabled system-wide before being enabled at a user level
+  programs = {
+    zsh = {
+      enable = true; # zsh needs to be enabled system-wide before being enabled at a user level
+    };
+    gnupg = {
+      agent = {
+        enable = true;
+        enableSSHSupport = true;
+      };
+    };
+    dconf = {
+      enable = true;
+    };
+  };
   users.users.beegass.shell = pkgs.zsh; # enable at a user level
 
   # gnome performs its own ssh-agent stuff that prevents gpg-agent and ssh-agent from interacting
@@ -150,6 +161,7 @@
     SHELL = "zsh";
     EDITOR = "nvim";
     TERMINAL = "kitty";
+    GPG_TTY = "$(tty)";
   };
 
   # Flakes
