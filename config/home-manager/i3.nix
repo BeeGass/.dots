@@ -2,6 +2,7 @@
 
 let 
   mod = "Mod4";
+  wallpaper_path = "~/.dots/assets/background.png"; #~/Pictures/background.png
 in {
   xsession.windowManager.i3 = {
     enable = true;
@@ -78,7 +79,7 @@ in {
           notification = false; 
         }
 	      {
-          command = "${pkgs.feh}/bin/feh --bg-scale ~/Pictures/background.png";
+          command = "${pkgs.feh}/bin/feh --bg-scale ${wallpaper_path}";
           always = true;
           notification = false;
         }
