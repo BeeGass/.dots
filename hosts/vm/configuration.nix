@@ -5,10 +5,10 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      
+
       # Allow creation of arbitrary user
       ./main-user.nix
-      
+
       # import home manager
       inputs.home-manager.nixosModules.default
     ];
@@ -21,7 +21,7 @@
         configurationLimit = 10;  # Limits number of generations kept
       };
       efi = {
-        canTouchEfiVariables = true; 
+        canTouchEfiVariables = true;
         efiSysMountPoint = "/boot/efi";  # This may differ depending on your VM setup
       };
       # grub = {
@@ -34,7 +34,7 @@
   };
 
   # Set the hostname.
-  networking.hostName = "beegass-vm"; 
+  networking.hostName = "beegass-vm";
 
   # Enable networking with NetworkManager.
   networking.networkmanager.enable = true;
@@ -72,11 +72,14 @@
       i3 = {
         enable = true;
       };
-    };    
+    };
   };
 
   # Enable CUPS for printing.
   services.printing.enable = true;
+
+  # Enable PCSC-Lite for YubiKey support
+  pcscd.enable = true;
 
   # Configure sound with pipewire.
   sound.enable = true;
@@ -177,7 +180,7 @@
 
   # Nvidia
   #services.xserver.videoDrivers = ["nvidia"]
-  
+
   fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
     font-awesome
@@ -188,9 +191,8 @@
   ];
 
   #Firefox
-  programs.firefox.enable = true; 
+  programs.firefox.enable = true;
 
   # System state version (do not change this unless you know what you're doing).
   system.stateVersion = "24.11";
 }
-

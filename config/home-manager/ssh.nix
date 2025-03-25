@@ -1,19 +1,28 @@
 {
-programs.ssh = {
-	enable = true;
-	addKeysToAgent = "yes";
-	matchBlocks = {
-	    "github" = {
-		user = "git";
-		hostname = "github.com";
-		identitiesOnly = true;
-		identityFile = "~/.ssh/id_rsa_yubikey.pub";
-	    };
-	    "mydesktop" = {
-		user = "beegass";
-		hostname = "130.44.135.194";
-		port = 7569;
-	    };
-	};
+  programs.ssh = {
+    enable = true;
+    addKeysToAgent = "yes";
+
+    # Use correct identification
+    matchBlocks = {
+      "github" = {
+        user = "git";
+        hostname = "github.com";
+        identitiesOnly = true;
+        # Use a reference to the SSH key from your GPG key
+        identityFile = "~/.ssh/id_rsa_yubikey.pub";
+      };
+      "mydesktop" = {
+        user = "beegass";
+        hostname = "130.44.135.194";
+        port = 7569;
+      };
     };
+
+    # Additional SSH options
+    extraConfig = ''
+      # Ensure keys are added to the agent
+      AddKeysToAgent yes
+    '';
+  };
 }

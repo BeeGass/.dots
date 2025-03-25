@@ -68,11 +68,12 @@
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
     xclip
-    
+
     # Scripts
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
-    
-    #Unfree Section 
+    (pkgs.callPackage ../../config/home-manager/scripts/gpg-ssh-key.nix {})
+
+    #Unfree Section
     discord
     material-icons
     obsidian
