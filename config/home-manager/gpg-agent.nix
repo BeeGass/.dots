@@ -11,8 +11,7 @@
     defaultCacheTtlSsh = 3600;     # 1 hour for SSH
     maxCacheTtlSsh = 28800;        # 8 hours for SSH
 
-    # Use tty for CLI or consider "gnome3", "gtk2", "qt" for desktop
-    pinentryPackage = pkgs.pinentry-gtk2;
+    pinentryFlavor = "gtk2";
 
     # Extra configuration
     extraConfig = ''

@@ -149,7 +149,6 @@
 
   # System-wide packages.
   environment.systemPackages = with pkgs; [
-    pinentry-gtk2
     vim
     wget
     curl
