@@ -78,8 +78,8 @@
   # Enable CUPS for printing.
   services.printing.enable = true;
 
-  # Enable PCSC-Lite for YubiKey support
-  pcscd.enable = true;
+  # Enable PCSC-Lite for YubiKey 
+  services.pcscd.enable = true;
 
   # Configure sound with pipewire.
   sound.enable = true;
