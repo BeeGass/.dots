@@ -11,11 +11,13 @@
     maxCacheTtlSsh = 28800;        # 8 hours for SSH
 
     # Use tty for CLI or consider "gnome3", "gtk2", "qt" for desktop
-    pinentryFlavor = "tty";
+    pinentryPackage = pkgs.pinentry-gtk2;
 
-    # Additional options for flexibility
+    # Extra configuration
     extraConfig = ''
       allow-loopback-pinentry
+      allow-preset-passphrase
+      enable-ssh-support
     '';
   };
 }

@@ -78,7 +78,7 @@
   # Enable CUPS for printing.
   services.printing.enable = true;
 
-  # Enable PCSC-Lite for YubiKey 
+  # Enable PCSC-Lite for YubiKey
   services.pcscd.enable = true;
 
   # Configure sound with pipewire.
@@ -149,6 +149,7 @@
 
   # System-wide packages.
   environment.systemPackages = with pkgs; [
+    pinentry-gtk2
     vim
     wget
     curl
