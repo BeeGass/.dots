@@ -5,7 +5,7 @@ let
   keyId = "0xA34200D828A7BB26";
 
   # Path for the generated SSH public key
-  sshKeyPath = "~/.ssh/id_rsa_gpg.pub";
+  sshKeyPath = "~/.dots/config/home-manager/keychain/id_rsa_yubikey.pub";
 
   # Utilities we'll need
   gpg = "${pkgs.gnupg}/bin/gpg";

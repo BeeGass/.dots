@@ -127,12 +127,12 @@
     zsh = {
       enable = true; # zsh needs to be enabled system-wide before being enabled at a user level
     };
-    gnupg = {
-      agent = {
-        enable = true;
-        enableSSHSupport = true;
-      };
-    };
+    # gnupg = {
+    #   agent = {
+    #     enable = false;
+    #     enableSSHSupport = true;
+    #   };
+    # };
     dconf = {
       enable = true;
     };
@@ -165,6 +165,7 @@
     EDITOR = "nvim";
     TERMINAL = "kitty";
     GPG_TTY = "$(tty)";
+    SSH_AUTH_SOCK = "$(gpgconf --list-dirs agent-ssh-socket)";
   };
 
   # Flakes

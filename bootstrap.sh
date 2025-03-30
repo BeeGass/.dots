@@ -70,7 +70,7 @@ else
   # Fresh clone
   log "Cloning dots repository..."
   # Prefer SSH if keys exist
-  if [ -f "$HOME/.ssh/id_rsa" ] || [ -f "$HOME/.ssh/id_ed25519" ]; then
+  if [ -f "$HOME/.dots/config/home-manager/keychain/id_rsa" ] || [ -f "$HOME/.dots/config/home-manager/keychain/id_ed25519" ]; then
     if $GIT_CMD clone "$DOTS_SSH_REPO" "$DOTS_DIR" 2>/dev/null; then
       success "Cloned repository using SSH"
     else

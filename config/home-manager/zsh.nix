@@ -14,8 +14,8 @@ programs.zsh = {
       plugins = [
         "git"
         "tmux"
-        "ssh-agent"
-        "gpg-agent"
+        # "ssh-agent"
+        # "gpg-agent"
         # "uv"
         "aliases"
         "branch"
