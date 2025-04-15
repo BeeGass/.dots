@@ -7,6 +7,12 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    grub2-themes = {
+      url = "github:vinceliuice/grub2-themes";
+      # Optional: Add inputs.nixpkgs.follows if the theme depends on it,
+      # but it usually doesn't for simple themes.
+      # inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -18,6 +24,7 @@
         modules = [
           ./hosts/${name}/configuration.nix
           inputs.home-manager.nixosModules.home-manager
+          grub2-themes.nixosModules.default
         ];
       };
     in {
