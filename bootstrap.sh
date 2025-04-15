@@ -1,224 +1,138 @@
 #!/usr/bin/env bash
-set -eo pipefail  # e: exit on any error, o pipefail: exit if any part of a pipe fails
+set -eo pipefail
 
-#######################
-## CONFIGURATION SETUP
-#######################
-
-# URLs to your dotfiles repo (HTTPS and SSH versions)
+# ... (Keep CONFIGURATION SETUP, COLOR FUNCTIONS, VALIDATE ENVIRONMENT, ENSURE GIT) ...
 DOTS_REPO="https://github.com/BeeGass/.dots.git"
 DOTS_SSH_REPO="git@github.com:BeeGass/.dots.git"
-
-# Local directory where your dotfiles repo will live
 DOTS_DIR="$HOME/.dots"
-
-# Machine profile to apply (default to 'default' if not provided)
 PROFILE="${1:-default}"
+USERNAME="beegass" # Assuming this is constant for now
 
-# Optional hardcoded username (can be made dynamic if needed later)
-USERNAME="beegass"
-
-###############################
-## COLOR FUNCTIONS FOR OUTPUT
-###############################
-
-# Define color codes
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[0;33m'
-RED='\033[0;31m'
-NC='\033[0m'  # Reset color
-
-# Logging helpers for consistent colored output
+GREEN='\033[0;32m'; BLUE='\033[0;34m'; YELLOW='\033[0;33m'; RED='\033[0;31m'; NC='\033[0m';
 log()    { echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} $1"; }
 error()  { echo -e "${RED}[ERROR]${NC} $1" >&2; exit 1; }
 warn()   { echo -e "${YELLOW}[WARNING]${NC} $1"; }
 success(){ echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 
-######################################
-## VALIDATE ENVIRONMENT: MUST BE NixOS
-######################################
-if ! grep -q "ID=nixos" /etc/os-release 2>/dev/null; then
-  error "This script is intended for NixOS only"
-fi
+if ! grep -q "ID=nixos" /etc/os-release 2>/dev/null; then error "This script is intended for NixOS only"; fi
+if ! command -v git &>/dev/null; then log "Git not found, using nix-shell..."; export GIT_CMD="nix-shell -p git --run git"; else export GIT_CMD="git"; fi
 
-######################################
-## ENSURE GIT IS AVAILABLE FOR CLONE
-######################################
-if ! command -v git &>/dev/null; then
-  log "Git not found, installing temporarily with nix-shell..."
-  if ! command -v nix-shell &>/dev/null; then
-    error "Neither git nor nix-shell are available. Cannot continue."
-  fi
-  export GIT_CMD="nix-shell -p git --run git"
-else
-  export GIT_CMD="git"
-fi
-
-######################################
-## CLONE OR UPDATE DOTFILES REPOSITORY
-######################################
+# --- CLONE OR UPDATE DOTFILES REPOSITORY ---
 if [ -d "$DOTS_DIR" ]; then
-  # Repo already cloned
-  log "Dots directory already exists at $DOTS_DIR"
-  read -p "Update repository? [y/N] " -r
-  echo
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    cd "$DOTS_DIR" && $GIT_CMD pull
-  fi
+  log "Dots directory exists: $DOTS_DIR"
+  # Optional: Add prompt to update if desired
 else
-  # Fresh clone
   log "Cloning dots repository..."
-  # Prefer SSH if keys exist
-  if [ -f "$HOME/.dots/config/home-manager/keychain/id_rsa" ] || [ -f "$HOME/.dots/config/home-manager/keychain/id_ed25519" ]; then
-    if $GIT_CMD clone "$DOTS_SSH_REPO" "$DOTS_DIR" 2>/dev/null; then
-      success "Cloned repository using SSH"
-    else
-      warn "SSH clone failed, falling back to HTTPS"
-      $GIT_CMD clone "$DOTS_REPO" "$DOTS_DIR" || error "Failed to clone repository"
-    fi
+  if [ -f "$HOME/.ssh/id_rsa" ] || [ -f "$HOME/.ssh/id_ed25519" ]; then
+    if $GIT_CMD clone "$DOTS_SSH_REPO" "$DOTS_DIR" 2>/dev/null; then success "Cloned repository using SSH"; else warn "SSH clone failed, falling back to HTTPS"; $GIT_CMD clone "$DOTS_REPO" "$DOTS_DIR" || error "Failed to clone repository"; fi
   else
-    # HTTPS fallback
     $GIT_CMD clone "$DOTS_REPO" "$DOTS_DIR" || error "Failed to clone repository"
   fi
 fi
+cd "$DOTS_DIR" || error "Failed to change directory to $DOTS_DIR"
 
-######################################
-## DETECT BOOT MODE (UEFI vs BIOS)
-######################################
+# --- VALIDATE HOST PROFILE ---
+HOST_NIXOS_CONFIG_REL_PATH="hosts/$PROFILE/configuration.nix" # Relative path within repo
+HOST_NIXOS_CONFIG_ABS_PATH="$DOTS_DIR/$HOST_NIXOS_CONFIG_REL_PATH"
+HOST_HW_CONFIG_ABS_PATH="$DOTS_DIR/hosts/$PROFILE/hardware-configuration.nix"
+
+if [ ! -f "$HOST_NIXOS_CONFIG_ABS_PATH" ]; then
+  error "Host configuration file not found: $HOST_NIXOS_CONFIG_ABS_PATH"
+fi
+
+# --- DETECT BOOT MODE & GRUB DEVICE ---
+BOOT_MODE="bios" # Default
+GRUB_TARGET_DEVICE=""
 if [ -d /sys/firmware/efi/efivars ]; then
   BOOT_MODE="uefi"
   log "Detected UEFI boot mode"
-  # Special warning if VM profile is being used in UEFI mode
-  if [ "$PROFILE" = "vm" ]; then
-    warn "The vm profile is configured for BIOS. You may need to adjust bootloader settings."
-  fi
 else
-  BOOT_MODE="bios"
   log "Detected BIOS boot mode"
-  # Warn if BIOS mode but running a non-VM profile
-  if [ "$PROFILE" != "vm" ]; then
-    warn "You're using a non-VM profile on a BIOS system. You may need to adjust bootloader settings."
-  fi
+  # Try to detect BIOS boot device
+  ROOT_DEVICE_NAME=$(lsblk -ndo pkname "$(findmnt -n -o SOURCE /)" | head -n1)
+  if [ -n "$ROOT_DEVICE_NAME" ]; then
+    GRUB_TARGET_DEVICE="/dev/$ROOT_DEVICE_NAME"
+    log "Detected potential GRUB BIOS device: $GRUB_TARGET_DEVICE"
+  else
+    warn "Could not detect GRUB BIOS device, will default to /dev/sda in config if GRUB BIOS is chosen."
+    GRUB_TARGET_DEVICE="/dev/sda" # Fallback
+ fi
 fi
 
-######################################
-## VALIDATE HOST PROFILE EXISTS
-######################################
-HOST_DIR="$DOTS_DIR/hosts/$PROFILE"
-if [ ! -d "$HOST_DIR" ]; then
-  error "Host directory for '$PROFILE' doesn't exist in the repository"
-fi
-
-######################################
-## GENERATE HARDWARE CONFIG FOR SYSTEM
-######################################
+# --- GENERATE HARDWARE CONFIG ---
 log "Generating hardware configuration..."
-sudo mkdir -p /etc/nixos
-sudo nixos-generate-config --show-hardware-config > "$HOST_DIR/hardware-configuration.nix"
-success "Hardware configuration generated"
+sudo mkdir -p /etc/nixos # Ensure target dir exists
+# Generate into the correct location WITHIN the checked-out repo
+sudo nixos-generate-config --show-hardware-config > "$HOST_HW_CONFIG_ABS_PATH"
+success "Hardware configuration generated into repository structure."
 
-######################################
-## BACKUP EXISTING NIXOS CONFIG
-######################################
-if [ -f /etc/nixos/configuration.nix ]; then
-  log "Backing up existing configuration..."
-  sudo cp /etc/nixos/configuration.nix /etc/nixosconfiguration.nix.backup.$(date +%Y%m%d%H%M%S)
+# --- BACKUP AND CLEAN /etc/nixos ---
+CONFIG_BACKUP_FILE="/etc/nixos/configuration.nix.backup.$(date +%Y%m%d%H%M%S)"
+HW_CONFIG_BACKUP_FILE="/etc/nixos/hardware-configuration.nix.backup.$(date +%Y%m%d%H%M%S)"
+if [ -f /etc/nixos/configuration.nix ]; then log "Backing up existing configuration to $CONFIG_BACKUP_FILE"; sudo cp /etc/nixos/configuration.nix "$CONFIG_BACKUP_FILE"; fi
+if [ -f /etc/nixos/hardware-configuration.nix ]; then log "Backing up existing hardware config to $HW_CONFIG_BACKUP_FILE"; sudo cp /etc/nixos/hardware-configuration.nix "$HW_CONFIG_BACKUP_FILE"; fi
+log "Cleaning existing symlinks/files in /etc/nixos/..."
+sudo find /etc/nixos/ -maxdepth 1 -type l -delete # Remove symlinks
+sudo find /etc/nixos/ -maxdepth 1 -type f \( -name "configuration.nix" -o -name "hardware-configuration.nix" \) -delete # Remove old config files
+
+# --- MODIFY HOST CONFIGURATION BASED ON BOOT MODE ---
+log "Adjusting bootloader configuration in $HOST_NIXOS_CONFIG_ABS_PATH for $BOOT_MODE mode..."
+CONFIG_TEMP_FILE="${HOST_NIXOS_CONFIG_ABS_PATH}.tmp"
+cp "$HOST_NIXOS_CONFIG_ABS_PATH" "$CONFIG_TEMP_FILE" || error "Failed to copy host config for modification"
+
+if [ "$BOOT_MODE" = "uefi" ]; then
+  # Prefer systemd-boot for UEFI unless GRUB is explicitly wanted/needed
+  # Uncomment systemd-boot section
+  sed -i '/# Option 2: systemd-boot/,/# End Bootloader Section/s/# \(boot\.loader\.systemd-boot\)/\1/' "$CONFIG_TEMP_FILE"
+  sed -i '/# Option 2: systemd-boot/,/# End Bootloader Section/s/# \(boot\.loader\.efi\.canTouchEfiVariables\)/\1/' "$CONFIG_TEMP_FILE"
+  # Ensure GRUB section remains commented
+  sed -i '/# Option 1: GRUB/,/# End Bootloader Section/s/^\([ ]*\)\(boot\.loader\.grub\)/#\1\2/' "$CONFIG_TEMP_FILE"
+  success "Enabled systemd-boot configuration for UEFI."
+
+  # --- OR --- If you prefer GRUB for UEFI:
+  # sed -i '/# Option 1: GRUB/,/# End Bootloader Section/s/# \(boot\.loader\.grub\)/\1/' "$CONFIG_TEMP_FILE"
+  # sed -i '/# Option 1: GRUB/,/# End Bootloader Section/s/# \(.*device = \)"nodev";/\1"nodev";/' "$CONFIG_TEMP_FILE" # Set device to nodev
+  # sed -i '/# Option 1: GRUB/,/# End Bootloader Section/s/# \(.*efiSupport = true;\)/\1/' "$CONFIG_TEMP_FILE" # Enable EFI support
+  # sed -i '/# Option 2: systemd-boot/,/# End Bootloader Section/s/^\([ ]*\)\(boot\.loader\.systemd-boot\)/#\1\2/' "$CONFIG_TEMP_FILE" # Keep systemd-boot commented
+  # sed -i '/# Option 2: systemd-boot/,/# End Bootloader Section/s/^\([ ]*\)\(boot\.loader\.efi\.canTouchEfiVariables\)/#\1\2/' "$CONFIG_TEMP_FILE" # Ensure EFI vars is only enabled once
+  # success "Enabled GRUB configuration for UEFI."
+
+else # BIOS Mode
+  # Uncomment GRUB section
+  sed -i '/# Option 1: GRUB/,/# End Bootloader Section/s/# \(boot\.loader\.grub\)/\1/' "$CONFIG_TEMP_FILE"
+  # Replace placeholder device with detected or default device
+  # Escape slashes in the device path for sed
+  GRUB_TARGET_DEVICE_ESCAPED=$(echo "$GRUB_TARGET_DEVICE" | sed 's/\//\\\//g')
+  sed -i "/# Option 1: GRUB/,/# End Bootloader Section/s/# \(.*device = \)\"\/dev\/sdX\";/\1\"${GRUB_TARGET_DEVICE_ESCAPED}\";/" "$CONFIG_TEMP_FILE"
+  # Ensure systemd-boot section remains commented
+  sed -i '/# Option 2: systemd-boot/,/# End Bootloader Section/s/^\([ ]*\)\(boot\.loader\.systemd-boot\)/#\1\2/' "$CONFIG_TEMP_FILE"
+  sed -i '/# Option 2: systemd-boot/,/# End Bootloader Section/s/^\([ ]*\)\(boot\.loader\.efi\.canTouchEfiVariables\)/#\1\2/' "$CONFIG_TEMP_FILE"
+  success "Enabled GRUB configuration for BIOS with device $GRUB_TARGET_DEVICE."
 fi
 
-# INSERT THE CLEANUP CODE HERE
+# Overwrite original config with modified temp file
+mv "$CONFIG_TEMP_FILE" "$HOST_NIXOS_CONFIG_ABS_PATH" || error "Failed to update host configuration file"
 
-######################################
-## CLEAN UP EXISTING /etc/nixos/
-######################################
-log "Cleaning up existing files in /etc/nixos/..."
-# Keep only hardware-configuration.nix if it exists and we want to preserve it
-if [ -f /etc/nixos/hardware-configuration.nix ] && [ "$1" != "--generate-hardware" ]; then
-  sudo mv /etc/nixos/hardware-configuration.nix /etc/nixos/hardware-configuration.nix.preserve
-fi
+# --- LINK CONFIGURATION FILES ---
+log "Linking system configurations into /etc/nixos/..."
+# Use absolute paths from the checked-out repo
+sudo ln -sf "$HOST_NIXOS_CONFIG_ABS_PATH" /etc/nixos/configuration.nix
+sudo ln -sf "$HOST_HW_CONFIG_ABS_PATH" /etc/nixos/hardware-configuration.nix
+success "System configurations linked."
 
-# Remove everything in /etc/nixos/
-sudo rm -rf /etc/nixos/*
+# --- HARDEN (Optional but good) ---
+# sudo chown root:root /etc/nixos/configuration.nix /etc/nixos/hardware-configuration.nix
+# sudo chmod 644 /etc/nixos/configuration.nix /etc/nixos/hardware-configuration.nix
 
-# Restore hardware config if we preserved it
-if [ -f /etc/nixos/hardware-configuration.nix.preserve ]; then
-  sudo mv /etc/nixos/hardware-configuration.nix.preserve /etc/nixos/hardware-configuration.nix
-fi
-success "Cleanup complete"
+# --- FINAL NIXOS REBUILD ---
+# The config file modified above is now linked in /etc/nixos
+# The flake build will use the committed version + local modifications
+log "Rebuilding NixOS using flake for profile '$PROFILE'..."
+# Make sure we are in the flake directory
+cd "$DOTS_DIR" || error "Failed to cd into $DOTS_DIR before rebuild"
+# Run the build (will warn about dirty tree because we modified configuration.nix)
+sudo nixos-rebuild switch --flake ".#$PROFILE" --show-trace || error "System rebuild failed"
+success "NixOS system rebuild complete for profile: $PROFILE"
 
-######################################
-## LINK SYSTEM CONFIGURATION FILES
-######################################
-log "Linking system configurations..."
-sudo ln -sf "$HOST_DIR/configuration.nix" /etc/nixos/configuration.nix
-sudo ln -sf "$HOST_DIR/hardware-configuration.nix" /etc/nixos/hardware-configuration.nix
-success "System configurations linked"
-
-######################################
-## DETECT GRUB DEVICE DYNAMICALLY
-######################################
-GRUB_DEVICE=$(lsblk -ndo pkname $(findmnt -n -o SOURCE /) | head -n1)
-if [ -z "$GRUB_DEVICE" ]; then
-  warn "Could not detect GRUB device automatically, falling back to /dev/sda"
-  GRUB_DEVICE="/dev/sda"
-else
-  GRUB_DEVICE="/dev/$GRUB_DEVICE"
-  log "Detected GRUB device: $GRUB_DEVICE"
-fi
-
-######################################
-## AUTO ADJUST BOOTLOADER CONFIGURATION
-######################################
-if [ "$BOOT_MODE" = "uefi" ] && [ "$PROFILE" = "vm" ]; then
-  log "Adjusting bootloader configuration for UEFI in VM profile..."
-  sudo sed -i 's/boot.loader.grub/# boot.loader.grub/g' "$HOST_DIR/configuration.nix"
-  cat << EOF | sudo tee -a "$HOST_DIR/configuration.nix.new"
-# Automatically adjusted for UEFI by bootstrap script
-boot.loader.systemd-boot.enable = true;
-boot.loader.efi.canTouchEfiVariables = true;
-boot.loader.efi.efiSysMountPoint = "/boot/efi";
-EOF
-  sudo mv "$HOST_DIR/configuration.nix.new" "$HOST_DIR/configuration.nix"
-elif [ "$BOOT_MODE" = "bios" ] && [ "$PROFILE" != "vm" ]; then
-  log "Adjusting bootloader configuration for BIOS..."
-  # Disable systemd-boot if BIOS
-  sudo sed -i 's/boot.loader.systemd-boot/# boot.loader.systemd-boot/g' "$HOST_DIR/configuration.nix"
-  sudo sed -i 's/boot.loader.efi/# boot.loader.efi/g' "$HOST_DIR/configuration.nix"
-  cat << EOF | sudo tee -a "$HOST_DIR/configuration.nix.new"
-# Automatically adjusted for BIOS by bootstrap script
-boot.loader.grub.enable = true;
-boot.loader.grub.device = "$GRUB_DEVICE";
-boot.loader.grub.useOSProber = true;
-EOF
-  sudo mv "$HOST_DIR/configuration.nix.new" "$HOST_DIR/configuration.nix"
-fi
-
-######################################
-## HARDEN SYSTEM CONFIGURATION
-######################################
-log "Applying security hardening..."
-sudo chown -R root:root /etc/nixos
-sudo chmod 644 /etc/nixos/configuration.nix
-sudo chmod 644 /etc/nixos/hardware-configuration.nix
-
-######################################
-## OPTIONAL CONFIG REVIEW BEFORE REBUILD
-######################################
-if [ -t 0 ]; then  # If script is running in an interactive shell
-  read -p "Review configuration before rebuilding? [y/N] " -r
-  echo
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    ${EDITOR:-nano} "$HOST_DIR/configuration.nix"
-  fi
-fi
-
-######################################
-## FINAL NIXOS REBUILD WITH FLAKE
-######################################
-log "Rebuilding NixOS with flake..."
-cd "$DOTS_DIR"
-sudo nixos-rebuild switch --flake ".#$PROFILE" || error "System rebuild failed"
-success "NixOS system rebuild complete"
-
-success "Bootstrap process complete for profile: $PROFILE"
-log "You may need to reboot for all changes to take effect"
+log "Bootstrap process finished. You may need to reboot."
+log "IMPORTANT: Commit the changes made to $HOST_NIXOS_CONFIG_ABS_PATH if you want to keep the bootloader selection."

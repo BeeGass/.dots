@@ -11,27 +11,42 @@
 
       # import home manager
       inputs.home-manager.nixosModules.default
+
+      # Grub Settings
+      ../../config/nixos/grub.nix
     ];
 
-  # Bootloader configuration.
-  boot = {
-    loader = {
-      systemd-boot = {
-        enable = true;
-        configurationLimit = 10;  # Limits number of generations kept
-      };
-      efi = {
-        canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot/efi";  # This may differ depending on your VM setup
-      };
-      # grub = {
-      #   enable = true;
-      #   version = 2;
-      #   device = "/dev/sda";
-      #   useOSProber = true;
-      # };
-    };
+  nix.package = pkgs.nixVersions.nix_2_26;
+
+  # run this command to find out which boot loader to use
+  # test -d /sys/firmware/efi/efivars && echo "System booted in UEFI mode" || echo "System booted in BIOS/Legacy mode" 
+
+  # --- BOOTLOADER SECTION (Defaults commented, script will uncomment) ---
+
+  # Option 1: GRUB (for BIOS or UEFI)
+  # boot.loader.grub = {
+  #   enable = true;
+  #   # For BIOS: device = "/dev/sdX"; # Script will replace /dev/sdX
+  #   # For UEFI: device = "nodev"; # Script will set this if UEFI
+  #   # For UEFI: efiSupport = true; # Script will set this if UEFI
+  # };
+
+  # Option 2: systemd-boot (UEFI only)
+  # boot.loader.systemd-boot = {
+  #   enable = true;
+  #   configurationLimit = 10;
+  # };
+  # boot.loader.efi.canTouchEfiVariables = true; # Needed for systemd-boot or GRUB UEFI
+
+
+  # --- End Bootloader Section ---
+  
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev"; # Script will set this if UEFI
+    # efiSupport = true; # Script will set this if UEFI
   };
+  # boot.loader.efi.canTouchEfiVariables = true;
 
   # Set the hostname.
   networking.hostName = "beegass-default";
@@ -82,14 +97,13 @@
   services.pcscd.enable = true;
 
   # Configure sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
+  hardware.pulseaudio.enable = false; # Keep this if you only want PipeWire
+  security.rtkit.enable = true;      # Good for PipeWire/PulseAudio realtime scheduling
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
-    pulse.enable = true;
+    pulse.enable = true; # Enables pipewire-pulse replacement
   };
 
   # User configuration.
@@ -192,5 +206,5 @@
   ];
 
   # System state version (do not change this unless you know what you're doing).
-  system.stateVersion = "24.11";
+  system.stateVersion = "22.05";
 }
