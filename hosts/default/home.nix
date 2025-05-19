@@ -54,6 +54,7 @@
     # Free Section
     bat
     cbonsai
+    xclip
     font-awesome
     neofetch
     maim
@@ -63,11 +64,10 @@
     rmview
     source-code-pro
     telegram-desktop
-    terminus-nerdfont
+    nerd-fonts.terminess-ttf
     tree
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
-    xclip
 
     # Scripts
     (pkgs.callPackage ../../config/home-manager/scripts/getbranch.nix {})
