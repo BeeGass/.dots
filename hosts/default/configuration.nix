@@ -211,7 +211,6 @@
   fonts.packages = with pkgs; [
     font-awesome
     source-code-pro
-    # terminus-nerdfont
     nerd-fonts.terminess-ttf
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
