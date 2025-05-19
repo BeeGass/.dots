@@ -11,7 +11,8 @@
     defaultCacheTtlSsh = 3600;     # 1 hour for SSH
     maxCacheTtlSsh = 28800;        # 8 hours for SSH
 
-    pinentryPackage = pkgs.pinentry-gtk2;
+    pinentry.package = pkgs.pinetry-gtk2; 
+    #pinentryPackage = pkgs.pinentry-gtk2;
 
     # Extra configuration
     extraConfig = ''
