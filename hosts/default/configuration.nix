@@ -25,6 +25,7 @@
   };
 
   # boot.kernelPackages = pkgs.linuxPackages_lts;
+  boot.kernelPackages = pkgs.linuxPackages_stable;
   
   # Ensure binfmt is set up for emulation (fallback if cache fails)
   # boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -210,7 +211,8 @@
   fonts.packages = with pkgs; [
     font-awesome
     source-code-pro
-    terminus-nerdfont
+    # terminus-nerdfont
+    nerd-fonts.terminess-ttf
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans-mono.nix {})
     (pkgs.callPackage ../../config/home-manager/fonts/google-sans.nix {})
   ];
