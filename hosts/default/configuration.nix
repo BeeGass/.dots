@@ -24,8 +24,8 @@
     # package = pkgs.nixVersions.nix_2_16; # Your setting from before
   };
 
-  # boot.kernelPackages = pkgs.linuxPackages_6_6;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
   
   # Ensure binfmt is set up for emulation (fallback if cache fails)
   # boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
