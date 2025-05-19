@@ -13,19 +13,35 @@
       inputs.home-manager.nixosModules.default
 
       # Grub Settings
-      # ../../config/nixos/grub.nix
+      ../../config/nixos/grub.nix
     ];
 
   nix = {
+    # Ensure experimental features are enabled (you already have this)
+    settings.experimental-features = [ "nix-command" "flakes" ];
+
     # Add your user to trusted-users
     settings.trusted-users = [ "root" "@wheel" "beegass" ]; # Add "beegass"
 
+    # Optional but recommended: Add the RPi cache settings
+    settings.extra-substituters = [
+      "https://nixos-raspberrypi.cachix.org"
+      # Default cache is usually added automatically by NixOS,
+      # but explicitly adding doesn't hurt if you want to be sure:
+      "https://cache.nixos.org/"
+    ];
+    settings.extra-trusted-public-keys = [
+      "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
+      # Default key is usually added automatically:
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
+
     # update nix version here:
-    # package = pkgs.nixVersions.nix_2_16; # Your setting from before
+    package = pkgs.nixVersions.nix_2_16; # Your setting from before
   };
 
   # Ensure binfmt is set up for emulation (fallback if cache fails)
-  # boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # run this command to find out which boot loader to use
   # test -d /sys/firmware/efi/efivars && echo "System booted in UEFI mode" || echo "System booted in BIOS/Legacy mode" 
@@ -50,9 +66,12 @@
 
   # --- End Bootloader Section ---
   
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = false;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev"; # Script will set this if UEFI
+    # efiSupport = true; # Script will set this if UEFI
+  };
+  # boot.loader.efi.canTouchEfiVariables = true;
 
   # Set the hostname.
   networking.hostName = "beegass-default";
@@ -173,7 +192,6 @@
     wget
     curl
     git
-    xclip
     tmux
     openssh
     neovim
