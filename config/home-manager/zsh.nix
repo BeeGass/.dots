@@ -36,7 +36,7 @@ programs.zsh = {
       shutdown = "sudo shutdown now";
       "n" = "nvim";
     };
-    initExtraFirst = ''
+    initContent = ''
 	    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
     '';
     plugins = [
