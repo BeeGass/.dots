@@ -106,7 +106,7 @@
   services.pcscd.enable = true;
 
   # Configure sound with pipewire.
-  hardware.pulseaudio.enable = false; # Keep this if you only want PipeWire
+  services.pulseaudio.enable = false; # Keep this if you only want PipeWire
   security.rtkit.enable = true;      # Good for PipeWire/PulseAudio realtime scheduling
   services.pipewire = {
     enable = true;
