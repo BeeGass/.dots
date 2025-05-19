@@ -25,7 +25,7 @@
   };
 
   # boot.kernelPackages = pkgs.linuxPackages_lts;
-  boot.kernelPackages = pkgs.linuxPackages_stable;
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
   
   # Ensure binfmt is set up for emulation (fallback if cache fails)
   # boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
