@@ -10,7 +10,10 @@ in {
     config = {
       modifier = mod;
 
-      fonts = ["Google Sans Mono monospacified for Google Sans Mono 6"];
+      fonts = {
+        names = ["Google Sans Mono monospacified for Google Sans Mono 6"];
+        size = 10.0;
+      }; 
 
       bars = [ ];
 
