@@ -217,5 +217,6 @@
   ];
 
   # System state version (do not change this unless you know what you're doing).
-  system.stateVersion = "22.05";
+  # system.stateVersion = "22.05";
+  system.stateVersion = "24.11";
 }
