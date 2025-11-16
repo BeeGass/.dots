@@ -31,8 +31,8 @@ alias rm='rm -i'
 
 # --- Editors / Dotfiles ------------------------------------------------------
 alias n='nvim'
-alias zshfig='nvim ~/.dotfiles/zsh/zshrc'
-alias zshconfig='cd ~/.dotfiles && nvim'
+alias zshfig='nvim ~/.config/zsh/.zshrc'
+alias nixconfig='cd ~/.dots && nvim'
 
 # --- Security / GPG ----------------------------------------------------------
 alias yubioath='ykman oath accounts list'
@@ -58,11 +58,9 @@ alias uvtool='uv tool'
 alias yk='yk-status'
 alias yklock='yk-lock'
 
-# --- Neofetch wrapper is defined in scripts; avoid alias/function conflicts ---
-# If there's no `nf` command in PATH but the script exists, provide a soft alias.
-if ! command -v nf >/dev/null 2>&1 && [[ -x "$HOME/.dotfiles/scripts/neofetch_random.sh" ]]; then
-  alias nf="$HOME/.dotfiles/scripts/neofetch_random.sh"
-fi
+# --- Neofetch wrapper ---
+# Use neofetch if available
+command -v neofetch >/dev/null 2>&1 && alias nf='neofetch'
 
 # --- Smart ls fallback: prefer eza → lsd → coreutils ls ----------------------
 if command -v eza >/dev/null 2>&1; then

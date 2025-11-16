@@ -371,9 +371,10 @@ let g:startify_commands = [
 
 " Bookmarks - add your common files/directories here
 let g:startify_bookmarks = [
-    \ { 'v': '~/.dotfiles/vim/vimrc' },
+    \ { 'v': '~/.vimrc' },
     \ { 'z': '~/.zshrc' },
     \ { 'b': '~/.bashrc' },
+    \ { 'n': '~/.dots/flake.nix' },
     \ ]
 
 " Automatically update sessions

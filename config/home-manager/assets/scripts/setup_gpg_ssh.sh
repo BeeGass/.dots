@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# ~/.dotfiles/scripts/setup_gpg_ssh.sh
-# Idempotent GPG+SSH bootstrap that SYMLINKS configs from ~/.dotfiles/gnupg/.
+# setup_gpg_ssh.sh
+# Idempotent GPG+SSH bootstrap script.
+# NOTE: GPG configuration is managed by home-manager in NixOS environments.
 # - Picks per-OS gpg-agent.conf from: linux-/macos-/termux-gpg-agent.conf
 # - Optionally links gpg.conf and dirmngr.conf if present (no file generation)
 # - Wires gpg-agent as SSH agent, exports SSH pubkey from auth subkey
@@ -16,7 +17,7 @@ set -euo pipefail
 : "${SSH_PUB_OUT:=$HOME/.ssh/id_gpg_yubikey.pub}"
 : "${QUIET:=1}"             # 1=minimal output, 0=verbose
 : "${AUTO_GIT_CONFIG:=0}"   # 1 to set git signing key automatically if discoverable
-: "${GNUPG_DOT:=$HOME/.dotfiles/gnupg}"
+: "${GNUPG_DOT:=$HOME/.gnupg}"
 
 # -------- colors / log --------------------------------------------------------
 _use_color=1
@@ -135,7 +136,7 @@ launch_agent_env() {
 
 ensure_login_snippet() {
   section "Ensuring zsh login snippet"
-  local f="$HOME/.dotfiles/zsh/90-local.zsh"
+  local f="$HOME/.zshrc.local"
   mkdir -p "$(dirname "$f")"; touch "$f"; chmod 600 "$f"
   local start="# BEGIN gpg-ssh"
   local end="# END gpg-ssh"

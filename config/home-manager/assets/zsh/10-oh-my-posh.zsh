@@ -2,7 +2,7 @@
 # Oh-My-Posh Configuration
 # ============================================================================
 
-export OH_MY_POSH_CONFIG="$HOME/.dotfiles/oh-my-posh/config.json"
+export OH_MY_POSH_CONFIG="$HOME/.config/oh-my-posh/config.json"
 
 # Fence against nounset inside OMP widgets
 set +u

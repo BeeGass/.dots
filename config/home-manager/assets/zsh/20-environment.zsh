@@ -63,4 +63,4 @@ hash -d ludo=~/Projects/Ludo
 hash -d ludie=~/Projects/ludie-ai
 hash -d downloads=~/Downloads
 hash -d docs=~/Documents
-hash -d dots=~/.dotfiles
+hash -d dots=~/.dots

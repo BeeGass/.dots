@@ -45,12 +45,10 @@ _banner_can_inline_images() {
 }
 
 _banner_show() {
-  if _banner_can_inline_images && [[ -x "$HOME/.dotfiles/scripts/neofetch_random.sh" ]]; then
-    "$HOME/.dotfiles/scripts/neofetch_random.sh"
-  elif command -v neofetch >/dev/null 2>&1; then
+  if command -v neofetch >/dev/null 2>&1; then
     neofetch
   elif command -v pfetch >/dev/null 2>&1; then
-    "$HOME/.dotfiles/pfetch/runner.sh" 2>/dev/null || pfetch
+    pfetch
   else
     print -P "%F{cyan}%n@%m%f  %D{%a %b %d, %I:%M %p}  %~"
   fi
