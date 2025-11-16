@@ -5,20 +5,18 @@
     enableSshSupport = true;
     enableZshIntegration = true;
 
-    # Increased cache times to reduce PIN prompts
-    defaultCacheTtl = 3600;        # 1 hour
-    maxCacheTtl = 28800;           # 8 hours
-    defaultCacheTtlSsh = 3600;     # 1 hour for SSH
-    maxCacheTtlSsh = 28800;        # 8 hours for SSH
+    # Cache times matching dotfiles configuration
+    defaultCacheTtl = 1800;        # 30 minutes
+    maxCacheTtl = 7200;            # 2 hours
+    defaultCacheTtlSsh = 1800;     # 30 minutes for SSH
+    maxCacheTtlSsh = 7200;         # 2 hours for SSH
 
-    pinentry.package = pkgs.pinentry-gtk2; 
-    #pinentryPackage = pkgs.pinentry-gtk2;
+    pinentryPackage = pkgs.pinentry-gnome3;
 
     # Extra configuration
     extraConfig = ''
       allow-loopback-pinentry
       allow-preset-passphrase
-      enable-ssh-support
     '';
   };
 }

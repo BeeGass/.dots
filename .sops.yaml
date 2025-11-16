@@ -1,0 +1,32 @@
+# SOPS configuration for NixOS secrets management
+# This file defines which age keys can decrypt secrets
+
+keys:
+  # This will be populated with age public keys from each host
+  # Format: - &hostname age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  #
+  # To get a host's age key:
+  # 1. On the host, ensure age key exists: cat /var/lib/sops-nix/key.txt
+  # 2. Extract public key: nix-shell -p age --run "age-keygen -y /var/lib/sops-nix/key.txt"
+  # 3. Add the public key here with a reference name
+
+creation_rules:
+  # Secrets for all NixOS hosts
+  - path_regex: config/nixos/secrets/secrets.yaml$
+    key_groups:
+      - age:
+          # Add age public keys here as they are generated on each host
+          # Example:
+          # - *tensor
+          # - *manifold
+          # - *jacobian
+          # - *hessian
+          # - *laptop
+          #
+          # Initially empty - will be populated after generating age keys
+
+  # Future: Host-specific secrets can be added with additional rules
+  # - path_regex: config/nixos/secrets/tensor-secrets.yaml$
+  #   key_groups:
+  #     - age:
+  #         - *tensor
